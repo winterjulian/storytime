@@ -1,4 +1,4 @@
-<div class="journey-width bg-white shadow p-2">
+<div class="journey-width bg-white dark:bg-gray-950 shadow rounded p-3">
   @let journey = userJourney();
   @if (!journey) {
     <div>
@@ -31,7 +31,7 @@
         <app-user-step-element [userStep]="userStep" [userJourney]="journey"></app-user-step-element>
       }
       <div class="flex justify-center items-center m-2 mt-4">
-        <div style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300">
+        <div style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
           <i class="material-icons">add</i>
         </div>
       </div>
@@ -39,7 +39,7 @@
   </div>
   @if(!journey) {
     <div>
-      <div class="flex justify-between p-4">
+      <div class="flex justify-between pt-2">
         <div>
           <button (click)="userJourneyService.stopCreatingUserJourney()" class="standard-button cancel-button">
             Cancel

@@ -1,12 +1,17 @@
 <div
   id="issue-source"
   cdkDropList
+  class="h-full rounded shadow-inner dark:shadow-inner bg-gray-300 dark:bg-gray-700"
   [cdkDropListData]="issues()"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)"
-  style="border: 1px solid red; height: 100px; width: 250px;"
 >
+  <div class="p-2 pb-0">
+    Open issues
+  </div>
   @for(issue of issues(); track issue.id) {
-    <app-issue-element [issue]="issue"></app-issue-element>
+    <div class="p-2">
+      <app-issue-element [issue]="issue"></app-issue-element>
+    </div>
   }
 </div>
