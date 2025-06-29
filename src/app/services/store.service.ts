@@ -5,22 +5,26 @@ import {FormGroup} from '@angular/forms';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
-  private _userJourneys = signal<Array<UserJourney>>([{
-    title: 'Optimierung',
-    id: '123',
-    userSteps: [
+  private _userJourneys = signal<Array<UserJourney>>(
+    [
       {
-        id: '35de3',
-        title: 'Email versenden',
-        issues: []
-      },
-      {
-        id: '3w253',
-        title: 'Kekse',
-        issues: []
-      },
+        title: 'Optimierung',
+        id: '123',
+        userSteps: [
+         {
+            id: '35de3',
+            title: 'Email versenden',
+            issues: []
+          },
+         {
+           id: '3w253',
+            title: 'Kekse',
+            issues: []
+         },
+        ]
+      }
     ]
-  }]);
+  );
   private _issues = signal<Array<Issue>>([]);
 
   public readonly userJourneys = this._userJourneys.asReadonly();

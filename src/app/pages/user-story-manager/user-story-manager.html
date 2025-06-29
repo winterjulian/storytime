@@ -1,0 +1,20 @@
+<div class="flex flex-col h-full p-10">
+  <div class="pl-8 pr-8">
+    <app-user-story-controller></app-user-story-controller>
+  </div>
+  <div class="flex h-full overflow-hidden">
+    <div class="flex-1/4 h-full p-8">
+      <app-issue-list></app-issue-list>
+    </div>
+    <div class="flex flex-3/4 p-8 pl-0 h-full overflow-x-auto">
+      <div class="flex w-full shadow-inner rounded dark:shadow-inner bg-gray-300 dark:bg-gray-700">
+        @for(userJourney of userJourneys(); track userJourney.id) {
+          <app-user-journey-element class="m-4 mr-0" [userJourney]="userJourney"></app-user-journey-element>
+        }
+        @if(userJourneyService.isCreatingNewUserJourney()) {
+          <app-user-journey-element class="m-4"></app-user-journey-element>
+        }
+      </div>
+    </div>
+  </div>
+</div>

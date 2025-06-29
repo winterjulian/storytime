@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { MainPage } from './main-page';
+import { ReleasePage } from './release-page';
 
-describe('MainPage', () => {
-  let component: MainPage;
-  let fixture: ComponentFixture<MainPage>;
+describe('ReleasePage', () => {
+  let component: ReleasePage;
+  let fixture: ComponentFixture<ReleasePage>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [MainPage]
+      imports: [ReleasePage]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(MainPage);
+    fixture = TestBed.createComponent(ReleasePage);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

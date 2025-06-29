@@ -1,17 +1,20 @@
 <div
   id="issue-source"
   cdkDropList
-  class="h-full rounded shadow-inner dark:shadow-inner bg-gray-300 dark:bg-gray-700"
+  class="flex flex-col h-full rounded shadow-inner dark:shadow-inner bg-gray-300 dark:bg-gray-700"
   [cdkDropListData]="issues()"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)"
 >
-  <div class="p-2 pb-0">
+  <div class="p-2">
     Open issues
   </div>
-  @for(issue of issues(); track issue.id) {
-    <div class="p-2">
-      <app-issue-element [issue]="issue"></app-issue-element>
-    </div>
-  }
+  <div class="overflow-y-auto">
+    @for(issue of issues(); track issue.id) {
+      <div class="p-2 pt-0">
+        <app-issue-element [issue]="issue"></app-issue-element>
+      </div>
+    }
+  </div>
+
 </div>

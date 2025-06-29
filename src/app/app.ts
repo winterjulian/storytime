@@ -1,14 +1,14 @@
 import { Component } from '@angular/core';
-import {MainPage} from './pages/main-page/main-page';
 import {Header} from './components/header/header';
 import {DragDropModule} from '@angular/cdk/drag-drop';
+import {UserStoryManager} from './pages/user-story-manager/user-story-manager';
 
 @Component({
   selector: 'app-root',
   imports: [
-    MainPage,
     Header,
-    DragDropModule
+    DragDropModule,
+    UserStoryManager
   ],
   templateUrl: './app.html',
 })

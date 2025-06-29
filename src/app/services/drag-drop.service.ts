@@ -97,6 +97,5 @@ export class DragDropService {
     this.commandHistory = this.commandHistory.slice(0, this.currentHistoryIndex() + 1);
     this.commandHistory.push(command);
     this.currentHistoryIndex.update(v => v + 1);
-    console.log(this.commandHistory);
   }
 }

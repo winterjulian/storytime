@@ -1,7 +1,7 @@
-import {Component, inject, signal} from '@angular/core';
-import {UserStoryController} from '../user-story-controller/user-story-controller';
-import {IssueList} from '../issue-list/issue-list';
-import {UserJourneyElement} from '../user-journey-element/user-journey-element';
+import {Component, inject} from '@angular/core';
+import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
+import {IssueList} from '../../components/issue-list/issue-list';
+import {UserJourneyElement} from '../../components/user-journey-element/user-journey-element';
 import {UserJourneyService} from '../../services/user-journey.service';
 import {StoreService} from '../../services/store.service';
 
