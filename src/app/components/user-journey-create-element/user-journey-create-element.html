@@ -1,0 +1,28 @@
+<div>
+  <div class="flex flex-col items-start p-4">
+    <input
+      type="text"
+      class="w-64 rounded-md border border-gray-300 bg-white px-3 py-2 shadow-sm focus:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+      placeholder="Title ..."
+      [ngClass]="{
+        'border-gray-300 dark:border-gray-600 focus:border-blue-500': !form.controls['title'].invalid || !form.controls['title'].touched,
+        'border-red-500 focus:border-red-500 focus:ring-red-500': form.controls['title'].invalid && form.controls['title'].touched
+      }"
+      [value]="name()"
+      [formControl]="form.controls['title']"
+    />
+  </div>
+  <div class="flex justify-between p-4">
+    <div>
+      <button (click)="userJourneyService.stopCreatingUserJourney()" class="standard-button cancel-button">
+        Cancel
+      </button>
+    </div>
+    <div>
+      <button (click)="applyEdit()" class="standard-button">
+        Apply
+      </button>
+    </div>
+  </div>
+
+</div>

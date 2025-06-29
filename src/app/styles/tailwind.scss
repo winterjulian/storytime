@@ -1,0 +1,21 @@
+.standard-button {
+  @apply p-2 rounded;
+  @apply cursor-pointer;
+  @apply bg-gray-700 text-gray-200 hover:bg-gray-500;
+  @apply dark:bg-gray-200 dark:text-gray-700 hover:dark:bg-gray-400;
+
+  &:disabled {
+    @apply bg-gray-400 text-gray-200;
+    @apply dark:bg-gray-500 dark:text-gray-700;
+  }
+}
+
+.cancel-button {
+  @apply bg-amber-800 text-gray-200 hover:bg-gray-500;
+  @apply dark:bg-amber-500 dark:text-gray-700 hover:dark:bg-amber-400;
+
+  &:disabled {
+    @apply bg-gray-400 text-gray-200;
+    @apply dark:bg-gray-500 dark:text-gray-700;
+  }
+}

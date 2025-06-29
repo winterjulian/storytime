@@ -1,0 +1,16 @@
+<div
+  cdkDropList
+  [id]="dropZoneId"
+  [cdkDropListData]="userStep().issues"
+  [cdkDropListConnectedTo]="dropZones()"
+  (cdkDropListDropped)="onExecuteDrop($event)"
+  class="w-full bg-gray-200 p-2 mt-2 mb-2 p-2drop-zone">
+  <div>
+    {{ userStep().title }}
+  </div>
+  <div>
+    @for(issue of userStep().issues; track issue.id) {
+      <app-issue-element [issue]="issue"></app-issue-element>
+    }
+  </div>
+</div>

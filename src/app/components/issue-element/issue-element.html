@@ -1,0 +1,14 @@
+<div
+  cdkDrag
+  [cdkDragData]="issue()"
+  class="shadow border-gray-950 bg-gray-200">
+  <div>
+    {{ issue().id }}
+  </div>
+  <div>
+    {{ issue().title }}
+  </div>
+  <div>
+    {{ issue().description }}
+  </div>
+</div>

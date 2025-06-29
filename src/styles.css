@@ -1,0 +1,11 @@
+@import "tailwindcss";
+@import "./app/styles/tailwind.scss";
+@import "./app/styles/popup.scss";
+@import "./app/styles/specifics.scss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body {
+  height: 100%;
+}
