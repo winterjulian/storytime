@@ -4,17 +4,14 @@
   </div>
   <div class="flex h-full overflow-hidden">
     <div class="flex-1/4 h-full p-8">
-      <app-issue-list></app-issue-list>
+      <app-titled-card [title]="'Open Issues'">
+        <app-issue-list class="overflow-x-auto"></app-issue-list>
+      </app-titled-card>
     </div>
-    <div class="flex flex-3/4 p-8 pl-0 h-full overflow-x-auto">
-      <div class="flex w-full shadow-inner rounded dark:shadow-inner bg-gray-300 dark:bg-gray-700">
-        @for(userJourney of userJourneys(); track userJourney.id) {
-          <app-user-journey-element class="m-4 mr-0" [userJourney]="userJourney"></app-user-journey-element>
-        }
-        @if(userJourneyService.isCreatingNewUserJourney()) {
-          <app-user-journey-element class="m-4"></app-user-journey-element>
-        }
-      </div>
+    <div class="flex flex-3/4 h-full w-full p-8 pl-0 overflow-y-auto">
+      <app-titled-card [title]="'User Journeys'" class="w-full">
+        <app-user-journey-list class="overflow-y-auto h-full"></app-user-journey-list>
+      </app-titled-card>
     </div>
   </div>
 </div>

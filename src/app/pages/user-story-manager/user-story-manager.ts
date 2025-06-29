@@ -1,16 +1,18 @@
 import {Component, inject} from '@angular/core';
 import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
 import {IssueList} from '../../components/issue-list/issue-list';
-import {UserJourneyElement} from '../../components/user-journey-element/user-journey-element';
 import {UserJourneyService} from '../../services/user-journey.service';
 import {StoreService} from '../../services/store.service';
+import {TitledCard} from '../../components/titled-card/titled-card';
+import {UserJourneyList} from '../../components/user-journey-list/user-journey-list';
 
 @Component({
   selector: 'app-user-story-manager',
   imports: [
     UserStoryController,
     IssueList,
-    UserJourneyElement,
+    TitledCard,
+    UserJourneyList,
   ],
   standalone: true,
   templateUrl: './user-story-manager.html',

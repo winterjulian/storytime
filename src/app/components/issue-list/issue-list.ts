@@ -17,7 +17,7 @@ import {DragDropService} from '../../services/drag-drop.service';
 export class IssueList implements OnInit {
   public dragDropService = inject(DragDropService);
   public issues = signal<Array<Issue>>([
-    { id: '2cb2', description: 'Bla', title: 'Issue-123'},
+    { id: '12c3', description: 'Bla', title: 'Issue-123'},
     { id: '2cb2', description: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr', title: 'Issue-553'},
   ]);
   public dropZones = this.dragDropService.connectedDropZones;

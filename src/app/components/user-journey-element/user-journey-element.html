@@ -10,11 +10,11 @@
         placeholder="New journey ..."
         [ngClass]="{
         'border-b-gray-400 dark:border-b-gray-600':
-          !form.controls['title'].invalid || !form.controls['title'].touched,
+          !journeyForm.controls['title'].invalid || !journeyForm.controls['title'].touched,
         'border-b-red-500 focus:border-b-red-500':
-          form.controls['title'].invalid && form.controls['title'].touched
+          journeyForm.controls['title'].invalid && journeyForm.controls['title'].touched
       }"
-        [formControl]="form.controls['title']"
+        [formControl]="journeyForm.controls['title']"
       />
     </div>
   } @else {
@@ -30,11 +30,15 @@
       @for(userStep of journey.userSteps; track userStep.id) {
         <app-user-step-element [userStep]="userStep" [userJourney]="journey"></app-user-step-element>
       }
-      <div class="flex justify-center items-center m-2 mt-4">
-        <div style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
-          <i class="material-icons">add</i>
+      @if(isUserStepAdding()) {
+        <app-input-field [form]="stepForm" (apply)="applyNewStep()" (cancel)="setIsUserStepAdding(false)"></app-input-field>
+      } @else {
+        <div class="flex justify-center items-center m-2 mt-4">
+          <div (click)="setIsUserStepAdding(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
+            <i class="material-icons">add</i>
+          </div>
         </div>
-      </div>
+      }
     }
   </div>
   @if(!journey) {

@@ -2,6 +2,7 @@ import {Injectable, signal} from '@angular/core';
 import {UserJourney} from '../interfaces/user-journey';
 import {Issue} from '../interfaces/issue';
 import {FormGroup} from '@angular/forms';
+import {UserStep} from '../interfaces/user-step';
 
 @Injectable({ providedIn: 'root' })
 export class StoreService {
@@ -43,9 +44,8 @@ export class StoreService {
 
   createUserJourney(form: FormGroup) {
     const title = form.controls['title']?.value;
-
     const newJourney: UserJourney = {
-      id: this.getRandomId(),
+      id: this.getRandomId(this._userJourneys()),
       title,
       userSteps: []
     };
@@ -53,11 +53,22 @@ export class StoreService {
     this.addUserJourney(newJourney);
   }
 
-  getRandomId(): string {
+  createUserJourneyStep(journey: UserJourney, form: FormGroup): void {
+    const title = form.controls['input']?.value;
+    const newStep: UserStep = {
+      id: journey.id + '-' + this.getRandomId(journey.userSteps),
+      title,
+      issues: []
+    };
+
+    journey.userSteps.push(newStep);
+  }
+
+  getRandomId(arrayToCheck: Array<UserJourney | UserStep>): string {
     let id: string;
     do {
-      id = Math.random().toString(36).substring(2, 9); // zufälliger String
-    } while (this._userJourneys().some(j => j.id === id));
+      id = Math.random().toString(36).substring(2, 9);
+    } while (arrayToCheck.some(item => item.id === id));
     return id;
   }
 
