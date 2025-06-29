@@ -14,6 +14,7 @@ import {NgClass} from '@angular/common';
 })
 export class InputField {
   public form = input.required<FormGroup>()
+  public placeholder = input<string>('New...')
   public apply = output<void>();
   public cancel = output<void>();
 
@@ -51,6 +52,6 @@ export class InputField {
 
   cancelEdit() {
     this.cancel.emit();
-    // this.resetInput(); // actually not needed bc comp is destroyed
+    this.resetInput();
   }
 }

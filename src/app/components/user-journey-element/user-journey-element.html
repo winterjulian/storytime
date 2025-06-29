@@ -1,22 +1,12 @@
-<div class="journey-width bg-white dark:bg-gray-950 shadow rounded p-3">
+<div class="journey-width bg-white dark:bg-gray-950 shadow-xl rounded p-3">
   @let journey = userJourney();
   @if (!journey) {
-    <div>
-      <input
-        type="text"
-        class="w-full p-2 border-0 border-b-2 bg-transparent outline-none
-             border-gray-400 focus:border-blue-500 dark:border-gray-400 dark:text-white
-             dark:placeholder-gray-500"
-        placeholder="New journey ..."
-        [ngClass]="{
-        'border-b-gray-400 dark:border-b-gray-600':
-          !journeyForm.controls['title'].invalid || !journeyForm.controls['title'].touched,
-        'border-b-red-500 focus:border-b-red-500':
-          journeyForm.controls['title'].invalid && journeyForm.controls['title'].touched
-      }"
-        [formControl]="journeyForm.controls['title']"
-      />
-    </div>
+    <app-input-field
+    [form]="journeyForm"
+    [placeholder]="'New journey...'"
+    (apply)="applyNewJourney()"
+    (cancel)="cancelNewJourney()"
+  ></app-input-field>
   } @else {
     <div
       class="p-2 border-0 border-b-2 border-gray-400
@@ -31,30 +21,19 @@
         <app-user-step-element [userStep]="userStep" [userJourney]="journey"></app-user-step-element>
       }
       @if(isUserStepAdding()) {
-        <app-input-field [form]="stepForm" (apply)="applyNewStep()" (cancel)="setIsUserStepAdding(false)"></app-input-field>
+        <app-input-field
+          [form]="stepForm"
+          [placeholder]="'New step...'"
+          (apply)="applyNewStep()"
+          (cancel)="cancelNewStep(false)"
+        ></app-input-field>
       } @else {
         <div class="flex justify-center items-center m-2 mt-4">
-          <div (click)="setIsUserStepAdding(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
+          <div (click)="cancelNewStep(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
             <i class="material-icons">add</i>
           </div>
         </div>
       }
     }
   </div>
-  @if(!journey) {
-    <div>
-      <div class="flex justify-between pt-2">
-        <div>
-          <button (click)="userJourneyService.stopCreatingUserJourney()" class="standard-button cancel-button">
-            Cancel
-          </button>
-        </div>
-        <div>
-          <button (click)="applyEdit()" class="standard-button">
-            Apply
-          </button>
-        </div>
-      </div>
-    </div>
-  }
 </div>

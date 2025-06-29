@@ -42,8 +42,8 @@ export class StoreService {
     this._userJourneys.set([...current, userJourney]);
   }
 
-  createUserJourney(form: FormGroup) {
-    const title = form.controls['title']?.value;
+  createUserJourney(form: FormGroup, key: string) {
+    const title = form.controls[key]?.value;
     const newJourney: UserJourney = {
       id: this.getRandomId(this._userJourneys()),
       title,
@@ -53,8 +53,8 @@ export class StoreService {
     this.addUserJourney(newJourney);
   }
 
-  createUserJourneyStep(journey: UserJourney, form: FormGroup): void {
-    const title = form.controls['input']?.value;
+  createUserJourneyStep(journey: UserJourney, form: FormGroup, key: string): void {
+    const title = form.controls[key]?.value;
     const newStep: UserStep = {
       id: journey.id + '-' + this.getRandomId(journey.userSteps),
       title,

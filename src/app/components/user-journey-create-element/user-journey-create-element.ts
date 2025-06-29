@@ -43,7 +43,7 @@ export class UserJourneyCreateElement {
     }
 
     this.userJourneyService.stopCreatingUserJourney();
-    this.store.createUserJourney(this.form);
+    this.store.createUserJourney(this.form, 'input');
   }
 
   cancelEdit() {
