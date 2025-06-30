@@ -15,9 +15,9 @@
               [userStep]="userStep"
               [userJourney]="userJourney"
             ></app-user-step-element>
-          </div>
 
-          
+            <app-issue-list-wrapper [userJourney]="userJourney" [userStep]="userStep"></app-issue-list-wrapper>
+          </div>
         }
         <app-user-step-element-create [userJourney]="userJourney"></app-user-step-element-create>
       </div>

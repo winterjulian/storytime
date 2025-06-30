@@ -1,7 +1,5 @@
-<div cdkDrag [cdkDragData]="issue()" class="shadow-md rounded pt-1">
-  <div
-    class="flex justify-between pr-2 pl-2 bg-gray-200 dark:bg-gray-800 rounded-t border-b-1 border-gray-400"
-  >
+<div cdkDrag [cdkDragData]="issue()" class="issue-card shadow-md rounded pt-1 mb-2">
+  <div class="flex justify-between border-b-1 border-amber-950 dark:border-amber-100">
     <div>
       {{ issue().title }}
     </div>
@@ -9,7 +7,7 @@
       {{ issue().id }}
     </div>
   </div>
-  <div class="flex bg-white dark:bg-gray-950 rounded-b text-xs p-2">
+  <div class="flex text-xs pt-1">
     {{ issue().description }}
   </div>
 </div>

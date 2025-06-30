@@ -1,14 +1,11 @@
-import { Component, inject, input, OnInit, output } from '@angular/core';
-import { UserStep } from '../../interfaces/user-step';
-import { CdkDragDrop, CdkDropList } from '@angular/cdk/drag-drop';
-import { UserJourney } from '../../interfaces/user-journey';
-import { DragDropService } from '../../services/drag-drop.service';
-import { Issue } from '../../interfaces/issue';
-import { IssueElement } from '../issue-element/issue-element';
+import {Component, inject, input, OnInit, output} from '@angular/core';
+import {UserStep} from '../../interfaces/user-step';
+import {UserJourney} from '../../interfaces/user-journey';
+import {DragDropService} from '../../services/drag-drop.service';
 
 @Component({
   selector: 'app-user-step-element',
-  imports: [CdkDropList, IssueElement],
+  imports: [],
   templateUrl: './user-step-element.html',
   styleUrl: './user-step-element.scss',
 })
@@ -30,14 +27,5 @@ export class UserStepElement implements OnInit {
       this.dropZoneId,
       this.userStep().issues,
     );
-  }
-
-  onExecuteDrop(e: CdkDragDrop<Issue[]>) {
-    this.dragDropService.executeDropCommand(e);
-  }
-
-  onDeleteStep() {
-    this.delete.emit();
-    // TODO: Trigger deletion
   }
 }

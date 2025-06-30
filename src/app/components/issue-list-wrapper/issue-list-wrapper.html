@@ -1,0 +1,13 @@
+<div
+  cdkDropList
+  [id]="dropZoneId"
+  [cdkDropListData]="userStep().issues"
+  [cdkDropListConnectedTo]="dropZones()"
+  (cdkDropListDropped)="onExecuteDrop($event)"
+  class="flex flex-col mt-2 h-24">
+  @for (issue of userStep().issues; track issue.id) {
+    <div>
+      <app-issue-element [issue]="issue"></app-issue-element>
+    </div>
+  }
+</div>

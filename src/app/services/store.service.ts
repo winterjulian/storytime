@@ -1,10 +1,10 @@
-import { Injectable, signal } from '@angular/core';
-import { UserJourney } from '../interfaces/user-journey';
-import { Issue } from '../interfaces/issue';
-import { FormGroup } from '@angular/forms';
-import { UserStep } from '../interfaces/user-step';
+import {Injectable, signal} from '@angular/core';
+import {UserJourney} from '../interfaces/user-journey';
+import {Issue} from '../interfaces/issue';
+import {FormGroup} from '@angular/forms';
+import {UserStep} from '../interfaces/user-step';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class StoreService {
   private _userJourneys = signal<Array<UserJourney>>([
     {
@@ -19,7 +19,7 @@ export class StoreService {
         {
           id: '3w253',
           title: 'Kekse',
-          issues: [],
+          issues: [{id: 'a8c3', description: 'Mehl und Zucker', title: 'Einkaufen'}],
         },
       ],
     },
