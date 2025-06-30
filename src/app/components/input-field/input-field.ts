@@ -1,12 +1,13 @@
 import {
   Component,
   ElementRef,
-  HostListener,
-  input,
+  HostListener, inject,
+  input, OnInit,
   output,
 } from '@angular/core';
-import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
-import { NgClass } from '@angular/common';
+import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
+import {NgClass} from '@angular/common';
+import {CreationService} from '../../services/creation.service';
 
 @Component({
   selector: 'app-input-field',
@@ -15,13 +16,16 @@ import { NgClass } from '@angular/common';
   templateUrl: './input-field.html',
   styleUrl: './input-field.scss',
 })
-export class InputField {
+export class InputField implements OnInit {
+  public creationService = inject(CreationService);
+
   public form = input.required<FormGroup>();
   public placeholder = input<string>('New...');
-  public apply = output<void>();
+  public accept = output<void>();
   public cancel = output<void>();
 
-  constructor(private elRef: ElementRef) {}
+  constructor(private elRef: ElementRef) {
+  }
 
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
@@ -40,21 +44,27 @@ export class InputField {
     }
   }
 
+  ngOnInit() {
+    this.creationService.setIsCreatingNewElement(true);
+  }
+
   get control(): FormControl {
     return this.form().controls['input'] as FormControl;
   }
 
-  resetInput() {
+  resetComponent() {
     this.form().controls['input'].reset();
+    this.creationService.setIsCreatingNewElement(false);
   }
 
   applyEdit() {
-    this.apply.emit();
-    this.resetInput();
+    this.accept.emit();
+    this.resetComponent();
+    this.creationService.setIsCreatingNewElement(true);
   }
 
   cancelEdit() {
     this.cancel.emit();
-    this.resetInput();
+    this.resetComponent();
   }
 }

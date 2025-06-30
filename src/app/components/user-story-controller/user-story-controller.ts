@@ -1,6 +1,6 @@
-import { Component, inject } from '@angular/core';
-import { DragDropService } from '../../services/drag-drop.service';
-import { UserJourneyService } from '../../services/user-journey.service';
+import {Component, inject} from '@angular/core';
+import {DragDropService} from '../../services/drag-drop.service';
+import {CreationService} from '../../services/creation.service';
 
 @Component({
   selector: 'app-user-story-controller',
@@ -10,7 +10,8 @@ import { UserJourneyService } from '../../services/user-journey.service';
 })
 export class UserStoryController {
   public dragDropService = inject(DragDropService);
-  public userJourneyService = inject(UserJourneyService);
+  public userJourneyService = inject(CreationService);
+
   undo(): void {
     this.dragDropService.undo();
   }

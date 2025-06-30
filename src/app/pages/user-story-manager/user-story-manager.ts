@@ -5,12 +5,12 @@ import {
   inject,
   ViewChild,
 } from '@angular/core';
-import { UserStoryController } from '../../components/user-story-controller/user-story-controller';
-import { IssueList } from '../../components/issue-list/issue-list';
-import { UserJourneyService } from '../../services/user-journey.service';
-import { StoreService } from '../../services/store.service';
-import { TitledArea } from '../../components/titled-card/titled-area';
-import { UserJourneyArea } from '../../components/user-journey-list/user-journey-area.component';
+import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
+import {IssueList} from '../../components/issue-list/issue-list';
+import {CreationService} from '../../services/creation.service';
+import {StoreService} from '../../services/store.service';
+import {TitledArea} from '../../components/titled-card/titled-area';
+import {UserJourneyArea} from '../../components/user-journey-list/user-journey-area.component';
 
 @Component({
   selector: 'app-user-story-manager',
@@ -21,16 +21,16 @@ import { UserJourneyArea } from '../../components/user-journey-list/user-journey
 })
 export class UserStoryManager {
   public store = inject(StoreService);
-  public userJourneyService = inject(UserJourneyService);
-  public userJourneys = this.store.userJourneys;
+  public creationService = inject(CreationService);
 
   @ViewChild('journeyCard') titledCard!: TitledArea;
 
   constructor() {
-    effect(() => {
-      this.userJourneyService.hasOpenedNewUserJourney()
-        ? this.titledCard.scrollToRight()
-        : null;
-    });
+    // effect(() => {
+    //   console.log('=> SCROLL');
+    //   this.creationService.isCreatingNewElement()
+    //     ? this.titledCard.scrollToRight()
+    //     : null;
+    // });
   }
 }

@@ -1,17 +1,19 @@
 import {Component, inject, input, signal} from '@angular/core';
-import {UserJourney} from '../../interfaces/user-journey';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {InputField} from '../input-field/input-field';
+import {InputField} from "../input-field/input-field";
 import {StoreService} from '../../services/store.service';
+import {UserJourney} from '../../interfaces/user-journey';
+import {FormBuilder, Validators} from '@angular/forms';
 
 @Component({
-  selector: 'app-user-step-create-element',
-  imports: [ReactiveFormsModule, InputField],
+  selector: 'app-user-step-element-create',
+  imports: [
+    InputField
+  ],
   standalone: true,
-  templateUrl: './user-step-create-element.html',
-  styleUrl: './user-step-create-element.scss',
+  templateUrl: './user-step-element-create.html',
+  styleUrl: './user-step-element-create.scss'
 })
-export class UserStepCreateElement {
+export class UserStepElementCreate {
   public store = inject(StoreService);
   userJourney = input.required<UserJourney>();
 

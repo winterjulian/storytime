@@ -1,12 +1,29 @@
-<div class="flex w-full h-full pl-4" #scrollContainer>
+<div class="flex flex-row w-full h-full pl-4" #scrollContainer>
   @for (userJourney of userJourneys(); track userJourney.id) {
-    <app-user-journey-element
-      class="pr-4"
-      [userJourney]="userJourney"
-    ></app-user-journey-element>
+    <!--- display existing journeys --->
+    <div class="pr-4">
+
+      <app-user-journey-element
+        class="mr-4"
+        [userJourney]="userJourney"
+      ></app-user-journey-element>
+
+      <div class="flex flex-row justify-center">
+        @for (userStep of userJourney.userSteps; track userStep.id) {
+          <div class="mr-2">
+            <app-user-step-element
+              [userStep]="userStep"
+              [userJourney]="userJourney"
+            ></app-user-step-element>
+          </div>
+
+          
+        }
+        <app-user-step-element-create [userJourney]="userJourney"></app-user-step-element-create>
+      </div>
+
+    </div>
   }
-  @if (userJourneyService.isCreatingNewUserJourney()) {
-    <app-user-journey-element class="pr-4"></app-user-journey-element>
-  }
+  <app-user-journey-element-create></app-user-journey-element-create>
 </div>
-<div>RELEASES?</div>
+<!--<div>RELEASES?</div>-->

@@ -1,51 +1,6 @@
 <div class="journey-card">
-  @let existingJourney = userJourney();
-  @if (!existingJourney) {
-    <app-input-field
-      class="w-full"
-      [form]="journeyForm"
-      [placeholder]="'New journey...'"
-      (apply)="applyNewJourney()"
-      (cancel)="cancelNewJourney()"
-    ></app-input-field>
-  } @else {
-    <div>
-      {{ existingJourney.title }}
-    </div>
-  }
-</div>
-
-@if (existingJourney) {
-  <div class="flex flex-row h-24 mt-2 w-full">
-    @for (userStep of existingJourney.userSteps; track userStep.id) {
-      <div class="mr-2">
-        <app-user-step-element
-          [userStep]="userStep"
-          [userJourney]="existingJourney"
-        ></app-user-step-element>
-      </div>
-    }
-    <div class="flex justify-center items-center w-full h-full">
-      @if (!isUserStepAdding()) {
-        <div class="flex justify-center items-center w-full">
-          <div
-            (click)="cancelNewStep(true)"
-            class="flex justify-center items-center rounded bg-blue-100 dark:bg-blue-900"
-          >
-            <i class="material-icons">add</i>
-          </div>
-        </div>
-      } @else {
-        <div class="flex justify-center items-center w-full">
-          <app-input-field
-            class="w-full"
-            [form]="stepForm"
-            [placeholder]="'New step...'"
-            (apply)="applyNewStep()"
-            (cancel)="cancelNewStep(false)"
-          ></app-input-field>
-        </div>
-      }
-    </div>
+  @let journey = userJourney();
+  <div>
+    {{ journey.title }}
   </div>
-}
+</div>
