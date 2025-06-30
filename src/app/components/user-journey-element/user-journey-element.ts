@@ -28,44 +28,31 @@ import {InputField} from '../input-field/input-field';
 export class UserJourneyElement implements OnInit {
   store = inject(StoreService);
   userJourneyService = inject(UserJourneyService);
-  userJourney = input<UserJourney | undefined>(undefined);
+
+  userJourney = input<UserJourney | undefined>(undefined); // undefined = creating
   isUserStepAdding = signal<boolean>(false);
   public apply = output<void>();
-
-  @HostListener('document:click', ['$event'])
-  handleClick(event: MouseEvent) {
-    if (!this.userJourney()) {
-      const clickedInside = this.elRef.nativeElement.contains(event.target);
-      if (!clickedInside) {
-        // this.cancelEdit();
-      }
-    }
-  }
 
   private fb = inject(FormBuilder);
   journeyForm = this.fb.group({
     input: this.fb.control<string>('', { validators: [Validators.required] })
   });
-
-  constructor(private elRef: ElementRef) {}
-
-  ngOnInit() {
-    if (!this.userJourney()) {
-      this.userJourneyService.triggerScrolling();
-    }
-  }
-
   stepForm = this.fb.group({
     input: this.fb.control<string>('', { validators: [Validators.required] })
   });
+
+  ngOnInit() {
+    if (!this.userJourney()) {
+      // trigger only when new userJourney (undefined)
+      this.userJourneyService.triggerScrolling();
+    }
+  }
 
   applyNewJourney(): void {
     if (this.journeyForm.invalid) {
       this.journeyForm.markAllAsTouched();
       return;
     }
-
-    console.log(this.journeyForm);
 
     this.userJourneyService.stopCreatingUserJourney();
     this.store.createUserJourney(this.journeyForm, 'input');
@@ -76,7 +63,6 @@ export class UserJourneyElement implements OnInit {
   }
 
   applyNewStep() {
-    console.log('applyNewStep');
     const form = this.stepForm;
     const journey = this.userJourney();
     if (form.invalid) {

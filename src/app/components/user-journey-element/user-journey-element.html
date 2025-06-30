@@ -1,6 +1,6 @@
-<div class="journey-width bg-white dark:bg-gray-950 shadow-xl rounded p-3">
-  @let journey = userJourney();
-  @if (!journey) {
+<div class="journey-card">
+  @let existingJourney = userJourney();
+  @if (!existingJourney) {
     <app-input-field
       class="w-full"
       [form]="journeyForm"
@@ -9,37 +9,40 @@
       (cancel)="cancelNewJourney()"
   ></app-input-field>
   } @else {
-    <div
-      class="p-2 border-0 border-b-2 border-gray-400
-           dark:border-gray-600 dark:text-white"
-    >
-      {{ journey.title }}
+    <div>
+      {{ existingJourney.title }}
     </div>
   }
-  <div>
-    @if(journey) {
-      @for(userStep of journey.userSteps; track userStep.id) {
-        <app-user-step-element [userStep]="userStep" [userJourney]="journey"></app-user-step-element>
-      }
-      <div class="h-12 flex justify-center items-center w-full">
-        @if(isUserStepAdding()) {
-          <div class="flex justify-center items-center w-full">
-            <app-input-field
-              class="w-full"
-              [form]="stepForm"
-              [placeholder]="'New step...'"
-              (apply)="applyNewStep()"
-              (cancel)="cancelNewStep(false)"
-            ></app-input-field>
-          </div>
-        } @else {
-          <div class="flex justify-center items-center">
-            <div (click)="cancelNewStep(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
-              <i class="material-icons">add</i>
-            </div>
-          </div>
-        }
+</div>
+
+@if(existingJourney) {
+  <div class="flex flex-row h-24 mt-2 w-full">
+    @for(userStep of existingJourney.userSteps; track userStep.id) {
+      <div class="mr-2">
+        <app-user-step-element [userStep]="userStep" [userJourney]="existingJourney"></app-user-step-element>
       </div>
     }
+    <div class="flex justify-center items-center w-full h-full">
+      @if(!isUserStepAdding()) {
+        <div class="flex justify-center items-center w-full">
+          <div
+            (click)="cancelNewStep(true)"
+            class="flex justify-center items-center rounded bg-blue-100 dark:bg-blue-900"
+          >
+            <i class="material-icons">add</i>
+          </div>
+        </div>
+      } @else {
+        <div class="flex justify-center items-center w-full">
+          <app-input-field
+            class="w-full"
+            [form]="stepForm"
+            [placeholder]="'New step...'"
+            (apply)="applyNewStep()"
+            (cancel)="cancelNewStep(false)"
+          ></app-input-field>
+        </div>
+      }
+    </div>
   </div>
-</div>
+}

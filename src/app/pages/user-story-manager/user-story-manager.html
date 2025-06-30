@@ -1,17 +1,20 @@
-<div class="flex flex-col h-full p-10">
-  <div class="pl-8 pr-8">
+<div class="flex flex-col h-full p-4">
+
+  <div class="pl-4 pr-4">
     <app-user-story-controller></app-user-story-controller>
   </div>
+
   <div class="flex h-full overflow-hidden">
-    <div class="flex-1/4 h-full p-8">
-      <app-titled-card #issueCard [title]="'Open Issues ✨'">
+    <div class="flex-1/4 h-full p-4">
+      <app-titled-area #issueCard [title]="'Open Issues ✨'">
         <app-issue-list class="h-full overflow-y-auto"></app-issue-list>
-      </app-titled-card>
+      </app-titled-area>
     </div>
-    <div #scrollContainer class="flex flex-3/4 h-full w-full p-8 pl-0 overflow-x-auto">
-      <app-titled-card #journeyCard [title]="'User Journeys 📜'" class="w-full">
-        <app-user-journey-list class="overflow-x-auto h-full"></app-user-journey-list>
-      </app-titled-card>
+    <div #scrollContainer class="flex flex-3/4 h-full w-full p-4 pl-0 overflow-x-auto">
+      <app-titled-area #journeyCard [title]="'User Journeys 📜'" class="w-full">
+        <app-user-journey-area class="overflow-x-auto h-full"></app-user-journey-area>
+      </app-titled-area>
     </div>
   </div>
+
 </div>

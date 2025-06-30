@@ -3,16 +3,16 @@ import {UserStoryController} from '../../components/user-story-controller/user-s
 import {IssueList} from '../../components/issue-list/issue-list';
 import {UserJourneyService} from '../../services/user-journey.service';
 import {StoreService} from '../../services/store.service';
-import {TitledCard} from '../../components/titled-card/titled-card';
-import {UserJourneyList} from '../../components/user-journey-list/user-journey-list';
+import {TitledArea} from '../../components/titled-card/titled-area';
+import {UserJourneyArea} from '../../components/user-journey-list/user-journey-area.component';
 
 @Component({
   selector: 'app-user-story-manager',
   imports: [
     UserStoryController,
     IssueList,
-    TitledCard,
-    UserJourneyList,
+    TitledArea,
+    UserJourneyArea,
   ],
   standalone: true,
   templateUrl: './user-story-manager.html',
@@ -23,7 +23,7 @@ export class UserStoryManager {
   public userJourneyService = inject(UserJourneyService);
   public userJourneys = this.store.userJourneys;
 
-  @ViewChild('journeyCard') titledCard!: TitledCard;
+  @ViewChild('journeyCard') titledCard!: TitledArea;
 
   constructor() {
     effect(() => {

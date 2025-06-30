@@ -4,14 +4,14 @@ import {StoreService} from '../../services/store.service';
 import {UserJourneyElement} from '../user-journey-element/user-journey-element';
 
 @Component({
-  selector: 'app-user-journey-list',
+  selector: 'app-user-journey-area',
   imports: [
     UserJourneyElement
   ],
-  templateUrl: './user-journey-list.html',
-  styleUrl: './user-journey-list.scss'
+  templateUrl: './user-journey-area.component.html',
+  styleUrl: './user-journey-area.component.scss'
 })
-export class UserJourneyList {
+export class UserJourneyArea {
   public userJourneyService = inject(UserJourneyService);
   public store = inject(StoreService)
   public userJourneys = this.store.userJourneys;

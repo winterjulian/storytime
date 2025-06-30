@@ -4,7 +4,7 @@
   [cdkDropListData]="userStep().issues"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)"
-  class="w-full bg-gray-300 dark:bg-gray-700 p-2 mt-2 mb-2 p-2drop-zone">
+  class="h-24 w-40 shadow-md rounded bg-blue-100 dark:bg-blue-950 drop-zone">
   <div class="flex flex-row justify-between">
     <div>
       {{ userStep().title }}

@@ -2,15 +2,13 @@ import {Component, effect, ElementRef, inject, input, ViewChild} from '@angular/
 import {UserJourneyService} from '../../services/user-journey.service';
 
 @Component({
-  selector: 'app-titled-card',
+  selector: 'app-titled-area',
   imports: [],
-  templateUrl: './titled-card.html',
-  styleUrl: './titled-card.scss'
+  templateUrl: './titled-area.html',
+  styleUrl: './titled-area.scss'
 })
-export class TitledCard {
+export class TitledArea {
   public title = input<string>('');
-
-  public userJourneyService = inject(UserJourneyService);
 
   @ViewChild('scrollContainer', { static: false })
   scrollContainer!: ElementRef;
