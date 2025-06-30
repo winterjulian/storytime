@@ -27,7 +27,7 @@ export class InputField implements OnInit {
   constructor(private elRef: ElementRef) {
   }
 
-  @HostListener('document:click', ['$event'])
+  @HostListener('document:mousedown', ['$event'])
   handleClick(event: MouseEvent) {
     const clickedInside = this.elRef.nativeElement.contains(event.target);
     if (!clickedInside) {
