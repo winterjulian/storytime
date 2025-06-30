@@ -21,19 +21,19 @@
 }
 
 .journey-card {
-  @apply h-24 w-36 shadow-md rounded p-3;
+  @apply h-22 w-36 shadow-md rounded p-2;
   @apply bg-white;
   @apply dark:bg-gray-950;
 }
 
 .step-card {
-  @apply h-24 w-36 shadow-md rounded p-3;
+  @apply h-22 w-36 shadow-md rounded p-2;
   @apply bg-blue-100;
   @apply dark:bg-blue-950;
 }
 
 .issue-card {
-  @apply h-24 w-36 shadow-md rounded p-3;
+  @apply h-22 w-36 shadow-md rounded p-2;
   @apply bg-amber-100;
   @apply dark:bg-amber-900;
 }

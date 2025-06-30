@@ -1,12 +1,14 @@
-<div class="flex flex-row w-full h-full pl-4" #scrollContainer>
+<div class="flex flex-row w-full h-full pl-4">
   @for (userJourney of userJourneys(); track userJourney.id) {
     <!--- display existing journeys --->
     <div class="pr-4">
 
-      <app-user-journey-element
-        class="mr-4"
-        [userJourney]="userJourney"
-      ></app-user-journey-element>
+      <div class="mb-2">
+        <app-user-journey-element
+          [userJourney]="userJourney"
+        ></app-user-journey-element>
+      </div>
+
 
       <div class="flex flex-row justify-center">
         @for (userStep of userJourney.userSteps; track userStep.id) {
