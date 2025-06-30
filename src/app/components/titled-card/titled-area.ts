@@ -1,11 +1,18 @@
-import {Component, effect, ElementRef, inject, input, ViewChild} from '@angular/core';
-import {UserJourneyService} from '../../services/user-journey.service';
+import {
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  input,
+  ViewChild,
+} from '@angular/core';
+import { UserJourneyService } from '../../services/user-journey.service';
 
 @Component({
   selector: 'app-titled-area',
   imports: [],
   templateUrl: './titled-area.html',
-  styleUrl: './titled-area.scss'
+  styleUrl: './titled-area.scss',
 })
 export class TitledArea {
   public title = input<string>('');
@@ -14,10 +21,10 @@ export class TitledArea {
   scrollContainer!: ElementRef;
 
   scrollToRight() {
-  const el = this.scrollContainer.nativeElement as HTMLElement;
+    const el = this.scrollContainer.nativeElement as HTMLElement;
     el.scrollTo({
       left: el.scrollWidth - el.clientWidth,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   }
 
@@ -25,7 +32,7 @@ export class TitledArea {
     const el = this.scrollContainer.nativeElement as HTMLElement;
     el.scrollTo({
       top: el.scrollHeight - el.clientHeight,
-      behavior: 'smooth'
+      behavior: 'smooth',
     });
   }
 }

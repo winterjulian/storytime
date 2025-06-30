@@ -8,9 +8,8 @@ describe('UserStepCreateElement', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserStepCreateElement]
-    })
-    .compileComponents();
+      imports: [UserStepCreateElement],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserStepCreateElement);
     component = fixture.componentInstance;

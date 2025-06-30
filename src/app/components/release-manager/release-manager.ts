@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   imports: [],
   standalone: true,
   templateUrl: './release-manager.html',
-  styleUrl: './release-manager.scss'
+  styleUrl: './release-manager.scss',
 })
-export class ReleaseManager {
-
-}
+export class ReleaseManager {}

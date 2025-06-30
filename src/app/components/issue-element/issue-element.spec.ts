@@ -8,9 +8,8 @@ describe('IssueInterface', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [IssueElement]
-    })
-    .compileComponents();
+      imports: [IssueElement],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(IssueElement);
     component = fixture.componentInstance;

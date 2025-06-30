@@ -5,8 +5,6 @@ import { Component } from '@angular/core';
   imports: [],
   standalone: true,
   templateUrl: './release-row.html',
-  styleUrl: './release-row.scss'
+  styleUrl: './release-row.scss',
 })
-export class ReleaseRow {
-
-}
+export class ReleaseRow {}

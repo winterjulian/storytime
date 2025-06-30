@@ -8,9 +8,8 @@ describe('UserJourneyElement', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [UserJourneyElement]
-    })
-    .compileComponents();
+      imports: [UserJourneyElement],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(UserJourneyElement);
     component = fixture.componentInstance;

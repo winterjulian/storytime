@@ -8,9 +8,8 @@ describe('DragDropExample', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DragDropExample]
-    })
-    .compileComponents();
+      imports: [DragDropExample],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(DragDropExample);
     component = fixture.componentInstance;

@@ -1,14 +1,12 @@
 <input
   type="text"
-  class="p-2 border-0 border-b-2 bg-transparent outline-none w-full
-             focus:border-blue-500 dark:text-white
-             dark:placeholder-gray-500"
+  class="p-2 border-0 border-b-2 bg-transparent outline-none w-full focus:border-blue-500 dark:text-white dark:placeholder-gray-500"
   [placeholder]="placeholder()"
   [ngClass]="{
-        'border-b-gray-400 dark:border-b-gray-600':
-          !control.invalid || !control.touched,
-        'border-b-red-500 dark:border-b-red-500':
-          control.invalid && control.touched
-      }"
+    'border-b-gray-400 dark:border-b-gray-600':
+      !control.invalid || !control.touched,
+    'border-b-red-500 dark:border-b-red-500':
+      control.invalid && control.touched,
+  }"
   [formControl]="control"
 />

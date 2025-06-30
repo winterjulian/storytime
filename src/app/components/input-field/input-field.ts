@@ -1,20 +1,23 @@
-import {Component, ElementRef, HostListener, input, output} from '@angular/core';
-import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
-import {NgClass} from '@angular/common';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  input,
+  output,
+} from '@angular/core';
+import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-input-field',
-  imports: [
-    ReactiveFormsModule,
-    NgClass
-  ],
+  imports: [ReactiveFormsModule, NgClass],
   standalone: true,
   templateUrl: './input-field.html',
-  styleUrl: './input-field.scss'
+  styleUrl: './input-field.scss',
 })
 export class InputField {
-  public form = input.required<FormGroup>()
-  public placeholder = input<string>('New...')
+  public form = input.required<FormGroup>();
+  public placeholder = input<string>('New...');
   public apply = output<void>();
   public cancel = output<void>();
 

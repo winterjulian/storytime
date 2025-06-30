@@ -7,7 +7,7 @@
   (cdkDropListDropped)="onExecuteDrop($event)"
 >
   <div class="rounded">
-    @for(issue of issues(); track issue.id) {
+    @for (issue of issues(); track issue.id) {
       <div>
         <app-issue-element [issue]="issue"></app-issue-element>
       </div>

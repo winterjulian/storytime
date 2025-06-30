@@ -6,24 +6,20 @@ import {
   input,
   OnInit,
   output,
-  signal
+  signal,
 } from '@angular/core';
-import {UserJourney} from '../../interfaces/user-journey';
-import {UserStepElement} from '../user-step-element/user-step-element';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {UserJourneyService} from '../../services/user-journey.service';
-import {StoreService} from '../../services/store.service';
-import {InputField} from '../input-field/input-field';
+import { UserJourney } from '../../interfaces/user-journey';
+import { UserStepElement } from '../user-step-element/user-step-element';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { UserJourneyService } from '../../services/user-journey.service';
+import { StoreService } from '../../services/store.service';
+import { InputField } from '../input-field/input-field';
 
 @Component({
   selector: 'app-user-journey-element',
-  imports: [
-    UserStepElement,
-    ReactiveFormsModule,
-    InputField
-  ],
+  imports: [UserStepElement, ReactiveFormsModule, InputField],
   templateUrl: './user-journey-element.html',
-  styleUrl: './user-journey-element.scss'
+  styleUrl: './user-journey-element.scss',
 })
 export class UserJourneyElement implements OnInit {
   store = inject(StoreService);
@@ -35,10 +31,10 @@ export class UserJourneyElement implements OnInit {
 
   private fb = inject(FormBuilder);
   journeyForm = this.fb.group({
-    input: this.fb.control<string>('', { validators: [Validators.required] })
+    input: this.fb.control<string>('', { validators: [Validators.required] }),
   });
   stepForm = this.fb.group({
-    input: this.fb.control<string>('', { validators: [Validators.required] })
+    input: this.fb.control<string>('', { validators: [Validators.required] }),
   });
 
   ngOnInit() {
@@ -71,7 +67,7 @@ export class UserJourneyElement implements OnInit {
     }
 
     if (journey) {
-      this.store.createUserJourneyStep(journey, form, 'input')
+      this.store.createUserJourneyStep(journey, form, 'input');
     }
   }
 

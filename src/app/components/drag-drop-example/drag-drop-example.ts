@@ -21,13 +21,13 @@ export class DragDropExampleComponent {
 
     if (toList === 'basketList') {
       if (!this.basket().includes(fruit)) {
-        this.basket.update(b => [...b, fruit]);
-        this.fruits.update(f => f.filter(fruitName => fruitName !== fruit));
+        this.basket.update((b) => [...b, fruit]);
+        this.fruits.update((f) => f.filter((fruitName) => fruitName !== fruit));
       }
     } else if (toList === 'fruitsList') {
       if (!this.fruits().includes(fruit)) {
-        this.fruits.update(f => [...f, fruit]);
-        this.basket.update(b => b.filter(fruitName => fruitName !== fruit));
+        this.fruits.update((f) => [...f, fruit]);
+        this.basket.update((b) => b.filter((fruitName) => fruitName !== fruit));
       }
     }
   }

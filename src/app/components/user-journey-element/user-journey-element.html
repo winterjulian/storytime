@@ -7,7 +7,7 @@
       [placeholder]="'New journey...'"
       (apply)="applyNewJourney()"
       (cancel)="cancelNewJourney()"
-  ></app-input-field>
+    ></app-input-field>
   } @else {
     <div>
       {{ existingJourney.title }}
@@ -15,15 +15,18 @@
   }
 </div>
 
-@if(existingJourney) {
+@if (existingJourney) {
   <div class="flex flex-row h-24 mt-2 w-full">
-    @for(userStep of existingJourney.userSteps; track userStep.id) {
+    @for (userStep of existingJourney.userSteps; track userStep.id) {
       <div class="mr-2">
-        <app-user-step-element [userStep]="userStep" [userJourney]="existingJourney"></app-user-step-element>
+        <app-user-step-element
+          [userStep]="userStep"
+          [userJourney]="existingJourney"
+        ></app-user-step-element>
       </div>
     }
     <div class="flex justify-center items-center w-full h-full">
-      @if(!isUserStepAdding()) {
+      @if (!isUserStepAdding()) {
         <div class="flex justify-center items-center w-full">
           <div
             (click)="cancelNewStep(true)"

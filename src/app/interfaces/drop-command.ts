@@ -1,4 +1,4 @@
-import {Issue} from './issue';
+import { Issue } from './issue';
 
 export interface DropCommand {
   type: 'transfer' | 'reorder';

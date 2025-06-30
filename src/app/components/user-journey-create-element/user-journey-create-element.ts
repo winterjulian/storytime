@@ -1,18 +1,26 @@
-import {Component, ElementRef, HostListener, inject, signal} from '@angular/core';
-import {UserJourneyService} from '../../services/user-journey.service';
-import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
-import {NgClass} from '@angular/common';
-import {StoreService} from '../../services/store.service';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  signal,
+} from '@angular/core';
+import { UserJourneyService } from '../../services/user-journey.service';
+import {
+  FormBuilder,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
+import { NgClass } from '@angular/common';
+import { StoreService } from '../../services/store.service';
 
 @Component({
   selector: 'app-user-journey-create-element',
-  imports: [
-    ReactiveFormsModule,
-    NgClass
-  ],
+  imports: [ReactiveFormsModule, NgClass],
   standalone: true,
   templateUrl: './user-journey-create-element.html',
-  styleUrl: './user-journey-create-element.scss'
+  styleUrl: './user-journey-create-element.scss',
 })
 export class UserJourneyCreateElement {
   public userJourneyService = inject(UserJourneyService);
@@ -21,7 +29,7 @@ export class UserJourneyCreateElement {
   private fb = inject(FormBuilder);
 
   form = this.fb.group({
-    title: this.fb.control<string>('', { validators: [Validators.required] })
+    title: this.fb.control<string>('', { validators: [Validators.required] }),
   });
 
   public name = signal<string>('');

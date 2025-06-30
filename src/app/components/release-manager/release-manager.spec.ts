@@ -8,9 +8,8 @@ describe('ReleaseManager', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ReleaseManager]
-    })
-    .compileComponents();
+      imports: [ReleaseManager],
+    }).compileComponents();
 
     fixture = TestBed.createComponent(ReleaseManager);
     component = fixture.componentInstance;

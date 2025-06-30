@@ -1,11 +1,19 @@
 <div class="flex justify-between">
   <div class="flex">
-    <button (click)="undo()" [disabled]="dragDropService.canUndo()" class="standard-button mr-2">
+    <button
+      (click)="undo()"
+      [disabled]="dragDropService.canUndo()"
+      class="standard-button mr-2"
+    >
       <div class="flex justify-center">
         <i class="material-icons">undo</i>
       </div>
     </button>
-    <button (click)="redo()" [disabled]="dragDropService.canRedo()" class="standard-button mr-2">
+    <button
+      (click)="redo()"
+      [disabled]="dragDropService.canRedo()"
+      class="standard-button mr-2"
+    >
       <div class="flex justify-center">
         <i class="material-icons">redo</i>
       </div>

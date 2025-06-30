@@ -1,11 +1,12 @@
 <div class="flex w-full h-full pl-4" #scrollContainer>
-  @for(userJourney of userJourneys(); track userJourney.id) {
-    <app-user-journey-element class="pr-4" [userJourney]="userJourney"></app-user-journey-element>
+  @for (userJourney of userJourneys(); track userJourney.id) {
+    <app-user-journey-element
+      class="pr-4"
+      [userJourney]="userJourney"
+    ></app-user-journey-element>
   }
-  @if(userJourneyService.isCreatingNewUserJourney()) {
+  @if (userJourneyService.isCreatingNewUserJourney()) {
     <app-user-journey-element class="pr-4"></app-user-journey-element>
   }
 </div>
-<div>
-  RELEASES?
-</div>
+<div>RELEASES?</div>

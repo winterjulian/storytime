@@ -1,8 +1,7 @@
-<div
-  cdkDrag
-  [cdkDragData]="issue()"
-  class="shadow-md rounded pt-1">
-  <div class="flex justify-between pr-2 pl-2 bg-gray-200 dark:bg-gray-800 rounded-t border-b-1 border-gray-400">
+<div cdkDrag [cdkDragData]="issue()" class="shadow-md rounded pt-1">
+  <div
+    class="flex justify-between pr-2 pl-2 bg-gray-200 dark:bg-gray-800 rounded-t border-b-1 border-gray-400"
+  >
     <div>
       {{ issue().title }}
     </div>
