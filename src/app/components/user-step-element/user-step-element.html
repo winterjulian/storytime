@@ -5,8 +5,13 @@
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)"
   class="w-full bg-gray-300 dark:bg-gray-700 p-2 mt-2 mb-2 p-2drop-zone">
-  <div>
-    {{ userStep().title }}
+  <div class="flex flex-row justify-between">
+    <div>
+      {{ userStep().title }}
+    </div>
+<!--    <div (click)="onDeleteStep()" class="text-gray-400 dark:text-gray-600">-->
+<!--      <i class="material-icons">delete</i>-->
+<!--    </div>-->
   </div>
   <div>
     @for(issue of userStep().issues; track issue.id) {

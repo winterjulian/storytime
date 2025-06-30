@@ -1,4 +1,4 @@
-import {Component, inject, input, OnInit} from '@angular/core';
+import {Component, inject, input, OnInit, output} from '@angular/core';
 import {UserStep} from '../../interfaces/user-step';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {UserJourney} from '../../interfaces/user-journey';
@@ -21,6 +21,7 @@ export class UserStepElement implements OnInit {
   public userStep = input.required<UserStep>();
   public userJourney = input.required<UserJourney>();
   public dropZones = this.dragDropService.connectedDropZones;
+  public delete = output<void>();
 
   public dropZoneId  = ''
 
@@ -32,5 +33,10 @@ export class UserStepElement implements OnInit {
 
   onExecuteDrop(e: CdkDragDrop<Issue[]>) {
     this.dragDropService.executeDropCommand(e);
+  }
+
+  onDeleteStep() {
+    this.delete.emit();
+    // TODO: Trigger deletion
   }
 }

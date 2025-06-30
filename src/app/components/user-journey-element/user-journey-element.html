@@ -2,10 +2,11 @@
   @let journey = userJourney();
   @if (!journey) {
     <app-input-field
-    [form]="journeyForm"
-    [placeholder]="'New journey...'"
-    (apply)="applyNewJourney()"
-    (cancel)="cancelNewJourney()"
+      class="w-full"
+      [form]="journeyForm"
+      [placeholder]="'New journey...'"
+      (apply)="applyNewJourney()"
+      (cancel)="cancelNewJourney()"
   ></app-input-field>
   } @else {
     <div
@@ -20,20 +21,25 @@
       @for(userStep of journey.userSteps; track userStep.id) {
         <app-user-step-element [userStep]="userStep" [userJourney]="journey"></app-user-step-element>
       }
-      @if(isUserStepAdding()) {
-        <app-input-field
-          [form]="stepForm"
-          [placeholder]="'New step...'"
-          (apply)="applyNewStep()"
-          (cancel)="cancelNewStep(false)"
-        ></app-input-field>
-      } @else {
-        <div class="flex justify-center items-center m-2 mt-4">
-          <div (click)="cancelNewStep(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
-            <i class="material-icons">add</i>
+      <div class="h-12 flex justify-center items-center w-full">
+        @if(isUserStepAdding()) {
+          <div class="flex justify-center items-center w-full">
+            <app-input-field
+              class="w-full"
+              [form]="stepForm"
+              [placeholder]="'New step...'"
+              (apply)="applyNewStep()"
+              (cancel)="cancelNewStep(false)"
+            ></app-input-field>
           </div>
-        </div>
-      }
+        } @else {
+          <div class="flex justify-center items-center">
+            <div (click)="cancelNewStep(true)" style="height: 30px; width: 30px; border-radius: 50%" class="flex justify-center items-center bg-gray-300 dark:bg-gray-700">
+              <i class="material-icons">add</i>
+            </div>
+          </div>
+        }
+      </div>
     }
   </div>
 </div>

@@ -1,4 +1,4 @@
-import {Component, inject} from '@angular/core';
+import {Component, effect, ElementRef, inject, ViewChild} from '@angular/core';
 import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
 import {IssueList} from '../../components/issue-list/issue-list';
 import {UserJourneyService} from '../../services/user-journey.service';
@@ -19,7 +19,15 @@ import {UserJourneyList} from '../../components/user-journey-list/user-journey-l
   styleUrl: './user-story-manager.scss'
 })
 export class UserStoryManager {
-  public userJourneyService = inject(UserJourneyService);
   public store = inject(StoreService)
+  public userJourneyService = inject(UserJourneyService);
   public userJourneys = this.store.userJourneys;
+
+  @ViewChild('journeyCard') titledCard!: TitledCard;
+
+  constructor() {
+    effect(() => {
+      this.userJourneyService.hasOpenedNewUserJourney() ? this.titledCard.scrollToRight() : null;
+    });
+  }
 }

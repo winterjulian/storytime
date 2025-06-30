@@ -1,4 +1,13 @@
-import {Component, ElementRef, HostListener, inject, input, signal} from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  input,
+  OnInit,
+  output,
+  signal
+} from '@angular/core';
 import {UserJourney} from '../../interfaces/user-journey';
 import {UserStepElement} from '../user-step-element/user-step-element';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
@@ -16,15 +25,12 @@ import {InputField} from '../input-field/input-field';
   templateUrl: './user-journey-element.html',
   styleUrl: './user-journey-element.scss'
 })
-export class UserJourneyElement {
+export class UserJourneyElement implements OnInit {
   store = inject(StoreService);
   userJourneyService = inject(UserJourneyService);
   userJourney = input<UserJourney | undefined>(undefined);
   isUserStepAdding = signal<boolean>(false);
-
-  private fb = inject(FormBuilder);
-
-  constructor(private elRef: ElementRef) {}
+  public apply = output<void>();
 
   @HostListener('document:click', ['$event'])
   handleClick(event: MouseEvent) {
@@ -36,9 +42,18 @@ export class UserJourneyElement {
     }
   }
 
+  private fb = inject(FormBuilder);
   journeyForm = this.fb.group({
     input: this.fb.control<string>('', { validators: [Validators.required] })
   });
+
+  constructor(private elRef: ElementRef) {}
+
+  ngOnInit() {
+    if (!this.userJourney()) {
+      this.userJourneyService.triggerScrolling();
+    }
+  }
 
   stepForm = this.fb.group({
     input: this.fb.control<string>('', { validators: [Validators.required] })
