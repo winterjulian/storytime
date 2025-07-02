@@ -1,7 +1,7 @@
 @if (popupService.isOpen()) {
   <div>
     <div class="backdrop"></div>
-    <div class="popup-content tailwindy-popup">
+    <div class="popup-content basic-text tailwindy-popup">
       @if (popupService.getTitle()) {
         <div class="text-xl pb-2 font-bold">
           {{ popupService.getTitle() }}
