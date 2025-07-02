@@ -1,9 +1,10 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   HostListener, inject,
   input, OnInit,
-  output,
+  output, ViewChild,
 } from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule} from '@angular/forms';
 import {NgClass} from '@angular/common';
@@ -16,7 +17,9 @@ import {CreationService} from '../../services/creation.service';
   templateUrl: './input-field.html',
   styleUrl: './input-field.scss',
 })
-export class InputField implements OnInit {
+export class InputField implements OnInit, AfterViewInit {
+  @ViewChild('inputField') inputRef!: ElementRef<HTMLInputElement>;
+
   public creationService = inject(CreationService);
 
   public form = input.required<FormGroup>();
@@ -46,6 +49,12 @@ export class InputField implements OnInit {
 
   ngOnInit() {
     this.creationService.setIsCreatingNewElement(true);
+    this.inputRef.nativeElement.focus();
+  }
+
+  ngAfterViewInit() {
+    this.inputRef.nativeElement.focus();
+    // makes scroll functionality unnecessary ... yay.
   }
 
   get control(): FormControl {

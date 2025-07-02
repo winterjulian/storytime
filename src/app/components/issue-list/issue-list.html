@@ -5,7 +5,7 @@
   [cdkDropListData]="issues()"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)">
-  <div class="rounded">
+  <div style="border: 1px solid transparent">
     @for (issue of issues(); track issue.id) {
       <div>
         <app-issue-element [issue]="issue"></app-issue-element>
