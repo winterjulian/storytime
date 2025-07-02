@@ -41,17 +41,22 @@ export class Header implements OnInit {
     // TODO: Keep for fake stories
     // TODO: Remove when not needed
     const journeyId = crypto.randomUUID();
+    const journeys = this.db.journeys();
     await this.db.addJourney({
       id: journeyId,
       title: 'Meine erste Journey',
-      order: 1,
+      order: journeys ? journeys.length : 0,
     });
 
     await this.db.addStep({
       id: crypto.randomUUID(),
       title: 'Erster Step',
       journeyId: journeyId, // Hier die id der gespeicherten Journey einsetzen
-      order: 1,
+      order: journeys ? journeys.length : 0,
     });
+  }
+
+  purgeDb() {
+    this.db.clearDatabaseCompletely();
   }
 }

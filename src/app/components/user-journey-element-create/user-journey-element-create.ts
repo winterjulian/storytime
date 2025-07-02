@@ -21,12 +21,12 @@ export class UserJourneyElementCreate {
   });
 
   acceptUserStory() {
-    console.log('acceptUserStory');
+    console.log('>>> acceptUserStory');
     this.store.createUserJourney(this.form, 'input')
   }
 
   cancelUserStory() {
-    console.log('cancelUserStory');
+    console.log('>>> cancelUserStory');
     this.userJourneyService.isCreatingNewUserJourney.set(false);
   }
 }

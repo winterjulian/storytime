@@ -21,7 +21,6 @@ export class UserStoryController {
   }
 
   addUserJourney(): void {
-    console.log('addUserJourney()');
     this.userJourneyService.startCreatingNewUserJourney();
   }
 }

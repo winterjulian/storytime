@@ -5,6 +5,7 @@ import {DragDropService} from '../../services/drag-drop.service';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {IssueElement} from '../issue-element/issue-element';
 import {StepIssue} from '../../interfaces/step-issue';
+import {StoreService} from '../../services/store.service';
 
 @Component({
   selector: 'app-issue-list-wrapper',
@@ -17,7 +18,9 @@ import {StepIssue} from '../../interfaces/step-issue';
   styleUrl: './issue-list-wrapper.scss'
 })
 export class IssueListWrapper implements OnInit {
+  // TODO: Rename => IssueWrapper / IssueDropZoneWrapper?
   public dragDropService = inject(DragDropService);
+  public store = inject(StoreService);
   public userJourney = input.required<UserJourney>();
   public userStep = input.required<UserStep>();
 
@@ -27,14 +30,17 @@ export class IssueListWrapper implements OnInit {
   ngOnInit() {
     this.dropZoneId =
       'drop-' + this.userJourney().id + '-' + this.userStep().id;
-    this.dragDropService.registerDropZone(this.dropZoneId);
+    this.dragDropService.registerDropZone(this.dropZoneId); // to have the zone as drop zone available globally
+    console.log('registerContainer-WRAPPER');
     this.dragDropService.registerContainer(
       this.dropZoneId,
       this.userStep().issues,
-    );
+    ); // to allow history (undo, redo)
   }
 
   public onExecuteDrop(event: CdkDragDrop<StepIssue[]>) {
-    this.dragDropService.executeDropCommand(event);
+    this.dragDropService.executeDropCommand(event, this.userStep());
+    const issue: StepIssue = event.item.data;
+    this.store.saveIssueInStep(event, issue, this.userStep().id)
   }
 }

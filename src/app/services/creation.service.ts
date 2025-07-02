@@ -30,7 +30,6 @@ export class CreationService {
   }
 
   setIsCreatingNewElement(bool: boolean): void {
-    console.log('setting: ', bool);
     this.isCreatingNewElement.set(bool);
     if (bool) {
       this.scrollToElement('input-field')

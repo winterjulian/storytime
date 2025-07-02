@@ -1,4 +1,4 @@
-export interface Issue {
+export interface DbStepIssue {
   id: string;
   title: string;
   description: string;

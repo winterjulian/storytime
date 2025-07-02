@@ -1,11 +1,11 @@
 <div cdkDrag [cdkDragData]="issue()" class="issue-card flex flex-col shadow-md rounded mb-2">
-  <div class="flex justify-between border-b-1 border-amber-950 dark:border-amber-100">
-    <div>
+  <div class="flex flex-col border-b-1 border-amber-950 dark:border-amber-100">
+    <div class="text-s">
       {{ issue().title }}!
     </div>
-    <div class="flex items-center text-xs">
-      {{ issue().id }}
-    </div>
+    <!--    <div class="flex items-center text-xs">-->
+    <!--      {{ issue().id }}-->
+    <!--    </div>-->
   </div>
   <div class="flex text-xs pt-2">
     {{ issue().description }}

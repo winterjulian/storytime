@@ -1,4 +1,4 @@
-export interface Step {
+export interface DbUserStep {
   id: string;
   title: string;
   journeyId: string;

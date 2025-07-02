@@ -1,4 +1,4 @@
-import {computed, Injectable, signal} from '@angular/core';
+import {computed, inject, Injectable, signal} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -6,9 +6,12 @@ import {
 } from '@angular/cdk/drag-drop';
 import {StepIssue} from '../interfaces/step-issue';
 import {DropCommand} from '../interfaces/drop-command';
+import {UserStep} from '../interfaces/user-step';
+import {StoreService} from './store.service';
 
 @Injectable({providedIn: 'root'})
 export class DragDropService {
+  private store = inject(StoreService);
   public connectedDropZones = signal<Array<string>>(['issue-source']);
 
   public commandHistory: DropCommand[] = [];
@@ -26,6 +29,7 @@ export class DragDropService {
   }
 
   public removeDropZone(connectedDropZone: string) {
+    // TODO: Remove zones from deleted steps/journeys
     this.connectedDropZones.update((array) =>
       array.filter((element) => element !== connectedDropZone),
     );
@@ -34,12 +38,13 @@ export class DragDropService {
   private containerMap = new Map<string, StepIssue[]>();
 
   registerContainer(id: string, data: StepIssue[]) {
+    console.log('> registerContainer');
     this.containerMap.set(id, data);
   }
 
-  executeDropCommand(event: CdkDragDrop<StepIssue[]>) {
+  executeDropCommand(event: CdkDragDrop<StepIssue[]>, userStep?: UserStep) {
     const command = this.generateCommandObject(event);
-    this.executeCommand(command);
+    this.executeDrop(command, userStep);
     this.addToHistory(command);
   }
 
@@ -52,25 +57,34 @@ export class DragDropService {
       sourceIndex: event.previousIndex,
       targetIndex: event.currentIndex,
       item: event.previousContainer.data[event.previousIndex],
-      timestamp: new Date(),
     };
   }
 
-  private executeCommand(command: DropCommand) {
+  private executeDrop(command: DropCommand, userStep?: UserStep) {
+    const sourceId = command.sourceContainerId;
+    const targetId = command.targetContainerId;
     const sourceArray = this.containerMap.get(command.sourceContainerId);
     const targetArray = this.containerMap.get(command.targetContainerId);
+
+    if (userStep) {
+      console.log('Target Array === userStep().issues',
+        targetArray === userStep.issues);
+    }
 
     if (!sourceArray || !targetArray) return;
 
     if (command.type === 'reorder') {
       moveItemInArray(sourceArray, command.sourceIndex, command.targetIndex);
     } else {
+      console.log('transferArrayItem()')
       transferArrayItem(
         sourceArray,
         targetArray,
         command.sourceIndex,
         command.targetIndex,
       );
+
+      this.store.transferIssues(command.item, userStep?.id);
     }
   }
 
@@ -89,7 +103,7 @@ export class DragDropService {
 
     this.currentHistoryIndex.update((v) => v + 1);
     const command = this.commandHistory[this.currentHistoryIndex()];
-    this.executeCommand(command);
+    this.executeDrop(command);
     return true;
   }
 

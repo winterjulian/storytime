@@ -4,8 +4,7 @@
   class="h-full p-4 pb-2 pt-0"
   [cdkDropListData]="issues()"
   [cdkDropListConnectedTo]="dropZones()"
-  (cdkDropListDropped)="onExecuteDrop($event)"
->
+  (cdkDropListDropped)="onExecuteDrop($event)">
   <div class="rounded">
     @for (issue of issues(); track issue.id) {
       <div>

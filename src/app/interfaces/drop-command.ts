@@ -7,5 +7,4 @@ export interface DropCommand {
   sourceIndex: number;
   targetIndex: number;
   item: StepIssue;
-  timestamp: Date;
 }

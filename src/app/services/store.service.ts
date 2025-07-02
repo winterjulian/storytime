@@ -3,33 +3,66 @@ import {UserJourney} from '../interfaces/user-journey';
 import {StepIssue} from '../interfaces/step-issue';
 import {FormGroup} from '@angular/forms';
 import {UserStep} from '../interfaces/user-step';
-import {Journey} from './models/journey.model';
-import {Step} from './models/step.model';
-import {Issue} from './models/issue.model';
 import {IndexedDbService} from './indexed-db.service';
+import {GitlabIssuesService} from './gitlab-issues.service';
+import {DbStepIssue} from './models/db-step-issue.model';
+import {CdkDragDrop} from '@angular/cdk/drag-drop';
+import {DbUserJourney} from './models/db-user-journey.model';
+import {DbUserStep} from './models/db-user-step.model';
+import {DbRelease} from './models/db-release.model';
 
 @Injectable({providedIn: 'root'})
 export class StoreService {
-  // private userJourneys = signal<Array<UserJourney>>([]);
-  public userJourneys = computed<UserJourney[]>(() => {
-    return this.db.journeys().map(journey => {
-      const userSteps = this.db.steps()
-        .filter(step => step.journeyId === journey.id)
-        .map(step => ({
-          ...step,
-          issues: this.db.issues().filter(issue => issue.stepId === step.id),
-        }));
 
-      return {
-        ...journey,
-        userSteps,
-      };
-    });
-  });
+  private db = inject(IndexedDbService);
+  private issueService = inject(GitlabIssuesService);
+
   public issues = signal<Array<StepIssue>>([]);
+  public gitlabIssues = computed(() => {
+    const dbIssues = this.db.issues();
+    if (!dbIssues) return [];
+
+    const gitlabAll = this.issueService.getIssues(); // synchron
+    const dbIssueIds = new Set(dbIssues.map(i => i.id));
+    return gitlabAll.filter(issue => !dbIssueIds.has(issue.id));
+  });
+  public userJourneys = computed<UserJourney[]>(() => {
+    const journeys = this.db.journeys();
+    const steps = this.db.steps();
+    const issues = this.db.issues();
+
+    if (!journeys || !steps || !issues) {
+      return [];
+    }
+
+    this.sortData(journeys);
+
+    const returnValue = journeys.map(journey => ({
+      ...journey,
+      userSteps: this.sortData(
+        steps
+          .filter(step => step.journeyId === journey.id)
+          .map(step => ({
+            ...step,
+            issues: issues.filter(issue => issue.stepId === step.id),
+          }))
+      ),
+    }));
+
+    console.log(returnValue);
+    return returnValue;
+  });
+
+  private sortData<T extends { order: number }>(array: Array<T>) {
+    return array.sort((a, b) => a.order - b.order);
+  }
+
+  public getUserJourneys(): UserJourney[] {
+    return this.userJourneys();
+  }
 
   deleteJourney(id: string): void {
-    this.db.deleteJourney(id);
+    this.db.deleteJourneyCascade(id);
   }
 
   deleteStep(id: string): void {
@@ -38,21 +71,17 @@ export class StoreService {
 
   // SETTER
 
-  addUserJourney(userJourney: UserJourney) {
-    console.log(userJourney);
-    // const current = this.userJourneys();
-    // this.userJourneys.set([...current, userJourney]);
-  }
-
   createUserJourney(form: FormGroup, key: string) {
     const title = form.controls[key]?.value;
+
     const newJourney: UserJourney = {
-      id: this.getRandomId(this.userJourneys()),
+      id: this.getRandomId(),
       title,
+      order: this.userJourneys().length,
       userSteps: [],
     };
 
-    this.addUserJourney(newJourney);
+    this.db.addJourney(newJourney);
   }
 
   createUserJourneyStep(
@@ -61,23 +90,26 @@ export class StoreService {
     key: string,
   ): void {
     const title = form.controls[key]?.value;
-    const newStep: UserStep = {
-      id: journey.id + '-' + this.getRandomId(journey.userSteps),
+    const newUserStep: UserStep = {
+      id: this.getRandomId(),
       title,
+      order: journey.userSteps.length,
+      journeyId: journey.id,
       issues: [],
     };
 
-    journey.userSteps.push(newStep);
+    journey.userSteps.push(newUserStep);
+    this.db.addStep(newUserStep)
   }
 
-  getRandomId(arrayToCheck: Array<UserJourney | UserStep>): string {
-    let id: string;
-    do {
-      id = Math.random().toString(36).substring(2, 9);
-    } while (arrayToCheck.some((item) => item.id === id));
-    return id;
+  getRandomId(): string {
+    return crypto.randomUUID();
   }
 
+  /**
+   * Deprecated
+   * @param issues
+   */
   setIssues(issues: Array<StepIssue>) {
     this.issues.set(issues);
   }
@@ -92,9 +124,45 @@ export class StoreService {
     this.issues.set(updated);
   }
 
-  // INDEXEDDB
+  saveIssueInStep(event: CdkDragDrop<StepIssue[]>, issue: StepIssue, stepId: string) {
+    // const previousContainer = event.previousContainer.id;
+    // const targetContainer = event.container.id;
+    //
+    // if (previousContainer !== targetContainer) {
+    //   this.db.deleteIssue(issue.id)
+    //   this.db.addIssue({
+    //     ...issue,
+    //     stepId: stepId
+    //   });
+    // }
+  }
 
-  public db = inject(IndexedDbService);
+  transferIssues(item: StepIssue, targetId: string | undefined): void {
+    console.log(item);
+    console.log(targetId);
+    this.db.deleteIssue(item.id)
+    console.log({
+      ...item,
+      stepId: targetId
+    })
+    if (targetId) {
+      this.db.addIssue({
+        ...item,
+        stepId: targetId
+      });
+    }
+
+  }
+
+  isContainerEqualToPreviousContainer(event: CdkDragDrop<StepIssue[]>) {
+    return event.container.id === event.previousContainer.id;
+  }
+
+  deleteIssueFromStep(issue: DbStepIssue) {
+    this.db.deleteIssue(issue.id);
+  }
+
+  // INDEXEDDB
 
   // public journeysWithSteps = computed<UserJourney[]>(() => {
   //   return this.db.journeys().map(journey => {
@@ -113,3 +181,5 @@ export class StoreService {
   // });
 
 }
+
+
