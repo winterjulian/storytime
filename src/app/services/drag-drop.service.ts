@@ -1,13 +1,13 @@
-import { computed, Injectable, signal } from '@angular/core';
+import {computed, Injectable, signal} from '@angular/core';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { Issue } from '../interfaces/issue';
-import { DropCommand } from '../interfaces/drop-command';
+import {StepIssue} from '../interfaces/step-issue';
+import {DropCommand} from '../interfaces/drop-command';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({providedIn: 'root'})
 export class DragDropService {
   public connectedDropZones = signal<Array<string>>(['issue-source']);
 
@@ -31,19 +31,19 @@ export class DragDropService {
     );
   }
 
-  private containerMap = new Map<string, Issue[]>();
+  private containerMap = new Map<string, StepIssue[]>();
 
-  registerContainer(id: string, data: Issue[]) {
+  registerContainer(id: string, data: StepIssue[]) {
     this.containerMap.set(id, data);
   }
 
-  executeDropCommand(event: CdkDragDrop<Issue[]>) {
+  executeDropCommand(event: CdkDragDrop<StepIssue[]>) {
     const command = this.generateCommandObject(event);
     this.executeCommand(command);
     this.addToHistory(command);
   }
 
-  private generateCommandObject(event: CdkDragDrop<Issue[]>): DropCommand {
+  private generateCommandObject(event: CdkDragDrop<StepIssue[]>): DropCommand {
     return {
       type:
         event.previousContainer === event.container ? 'reorder' : 'transfer',

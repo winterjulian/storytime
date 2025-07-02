@@ -1,6 +1,6 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {IssueElement} from '../issue-element/issue-element';
-import {Issue} from '../../interfaces/issue';
+import {StepIssue} from '../../interfaces/step-issue';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {DragDropService} from '../../services/drag-drop.service';
 
@@ -13,12 +13,12 @@ import {DragDropService} from '../../services/drag-drop.service';
 })
 export class IssueList implements OnInit {
   public dragDropService = inject(DragDropService);
-  public issues = signal<Array<Issue>>([
-    {id: '12c3', description: 'Bla', title: 'Issue-123'},
+  public issues = signal<Array<StepIssue>>([
+    {id: '12c3', description: 'Bla', title: 'StepIssue-123'},
     {
       id: '2cb2',
       description: 'Lorem ipsum dolor sit amet, consetetur',
-      title: 'Issue-553',
+      title: 'StepIssue-553',
     },
   ]);
   public dropZones = this.dragDropService.connectedDropZones;
@@ -27,7 +27,7 @@ export class IssueList implements OnInit {
     this.dragDropService.registerContainer('issue-source', this.issues());
   }
 
-  public onExecuteDrop(event: CdkDragDrop<Issue[]>) {
+  public onExecuteDrop(event: CdkDragDrop<StepIssue[]>) {
     this.dragDropService.executeDropCommand(event);
   }
 }

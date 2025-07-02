@@ -4,7 +4,7 @@ import {UserStep} from '../../interfaces/user-step';
 import {DragDropService} from '../../services/drag-drop.service';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {IssueElement} from '../issue-element/issue-element';
-import {Issue} from '../../interfaces/issue';
+import {StepIssue} from '../../interfaces/step-issue';
 
 @Component({
   selector: 'app-issue-list-wrapper',
@@ -34,7 +34,7 @@ export class IssueListWrapper implements OnInit {
     );
   }
 
-  public onExecuteDrop(event: CdkDragDrop<Issue[]>) {
+  public onExecuteDrop(event: CdkDragDrop<StepIssue[]>) {
     this.dragDropService.executeDropCommand(event);
   }
 }

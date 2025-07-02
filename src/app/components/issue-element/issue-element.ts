@@ -1,6 +1,6 @@
-import { Component, input } from '@angular/core';
-import { Issue } from '../../interfaces/issue';
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import {Component, input} from '@angular/core';
+import {StepIssue} from '../../interfaces/step-issue';
+import {CdkDrag} from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-issue-element',
@@ -10,5 +10,5 @@ import { CdkDrag } from '@angular/cdk/drag-drop';
   styleUrl: './issue-element.scss',
 })
 export class IssueElement {
-  issue = input.required<Issue>();
+  issue = input.required<StepIssue>();
 }

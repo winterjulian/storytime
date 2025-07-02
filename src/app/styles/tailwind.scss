@@ -12,7 +12,7 @@
 
 .cancel-button {
   @apply bg-amber-800 text-gray-200 hover:bg-gray-500;
-  @apply dark:bg-amber-500 dark:text-gray-700 hover:dark:bg-amber-400;
+  @apply dark:bg-amber-400 dark:text-gray-700 hover:dark:bg-amber-400;
 
   &:disabled {
     @apply bg-gray-400 text-gray-200;
@@ -36,4 +36,15 @@
   @apply h-22 w-36 shadow-md rounded p-2;
   @apply bg-amber-100;
   @apply dark:bg-amber-900;
+}
+
+.clickable-icons {
+  @apply cursor-pointer;
+  @apply text-gray-700 hover:text-blue-500;
+  @apply dark:text-gray-300 hover:dark:text-blue-500;
+}
+
+.tailwindy-popup {
+  @apply h-50 w-90 p-4 rounded;
+  @apply bg-gray-200 dark:bg-gray-500;
 }

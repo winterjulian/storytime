@@ -1,7 +1,7 @@
-import { Issue } from './issue';
+import {StepIssue} from './step-issue';
 
 export interface UserStep {
   id: string;
   title: string;
-  issues: Array<Issue>;
+  issues: Array<StepIssue>;
 }

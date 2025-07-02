@@ -1,4 +1,4 @@
-import { Issue } from './issue';
+import {StepIssue} from './step-issue';
 
 export interface DropCommand {
   type: 'transfer' | 'reorder';
@@ -6,6 +6,6 @@ export interface DropCommand {
   targetContainerId: string;
   sourceIndex: number;
   targetIndex: number;
-  item: Issue;
+  item: StepIssue;
   timestamp: Date;
 }

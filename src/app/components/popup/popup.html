@@ -1,0 +1,27 @@
+@if (popupService.isOpen()) {
+  <div>
+    <div class="backdrop"></div>
+    <div class="popup-content tailwindy-popup">
+      @if (popupService.getTitle()) {
+        <div class="text-xl pb-2 font-bold">
+          {{ popupService.getTitle() }}
+        </div>
+      }
+      @if (popupService.getMessage()) {
+        <div>
+          {{ popupService.getMessage() }}
+        </div>
+      }
+      @if (popupService.getComponent()) {
+        @let content = popupService.getComponent();
+        <ng-container>
+          <ng-container *ngComponentOutlet="content"></ng-container>
+        </ng-container>
+      }
+      <div class="flex gap-2 justify-end mt-4">
+        <button class="standard-button cancel-button" (click)="popupService.cancel()">Cancel</button>
+        <button class="standard-button" (click)="popupService.accept()">Accept</button>
+      </div>
+    </div>
+  </div>
+}

@@ -1,5 +1,8 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
 import {ThemeService} from '../../services/theme.service';
+import {IndexedDbService} from '../../services/indexed-db.service';
+import {StoreService} from '../../services/store.service';
+import {UserJourney} from '../../interfaces/user-journey';
 
 @Component({
   selector: 'app-header',
@@ -10,11 +13,12 @@ import {ThemeService} from '../../services/theme.service';
 })
 export class Header implements OnInit {
   public themeService = inject(ThemeService);
+  public db = inject(IndexedDbService);
+  public store = inject(StoreService);
   public isDarkMode = signal<boolean>(false);
+  public journeys = signal<UserJourney[]>([]);
 
   ngOnInit() {
-    console.log('>>> ngOnInit()');
-    console.log('>>> getDisplayMode(): ', this.themeService.getIfDisplayModeIsDark())
     const isDark = document.documentElement.classList.contains('dark');
     const hasDarkPreferences = this.themeService.getIfDisplayModeIsDark();
     this.isDarkMode.set(hasDarkPreferences);
@@ -33,8 +37,21 @@ export class Header implements OnInit {
     document.documentElement.classList.toggle('dark');
   }
 
-  // toggleDark() {
-  //   document.documentElement.classList.toggle('dark');
-  //   this.isDarkMode = document.documentElement.classList.contains('dark');
-  // }
+  async saveJourneys() {
+    // TODO: Keep for fake stories
+    // TODO: Remove when not needed
+    const journeyId = crypto.randomUUID();
+    await this.db.addJourney({
+      id: journeyId,
+      title: 'Meine erste Journey',
+      order: 1,
+    });
+
+    await this.db.addStep({
+      id: crypto.randomUUID(),
+      title: 'Erster Step',
+      journeyId: journeyId, // Hier die id der gespeicherten Journey einsetzen
+      order: 1,
+    });
+  }
 }
