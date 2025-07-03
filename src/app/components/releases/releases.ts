@@ -18,8 +18,6 @@ export class Releases {
   public title = uiTexts.general.releasesArea;
   public releases = this.store.releases;
 
-  // public releases = signal<Array<any>>([{id: '123', name: 'Test'}]);
-
   addRelease() {
     const release: Release = {
       id: crypto.randomUUID(),

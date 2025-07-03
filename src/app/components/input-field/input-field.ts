@@ -2,7 +2,7 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
-  HostListener, inject,
+  HostListener,
   input, OnInit,
   output, ViewChild,
 } from '@angular/core';
@@ -42,6 +42,7 @@ export class InputField implements OnInit, AfterViewInit {
   @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
     if (event.key === 'Enter' && event.ctrlKey) {
+      // TODO: Implement: switch to step creation instead of new journey;
       this.applyEdit();
     } else if (event.key === 'Enter') {
       this.applyEdit();

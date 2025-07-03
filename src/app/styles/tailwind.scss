@@ -9,6 +9,16 @@
 
 /* BASICS */
 
+.basic-background {
+  @apply bg-white;
+  @apply dark:bg-gray-950;
+}
+
+.basic-text {
+  @apply text-gray-950 ;
+  @apply dark:text-gray-100;
+}
+
 .app-header {
   @apply shadow;
   @apply border-b-1 border-gray-500;
@@ -20,11 +30,6 @@
   @apply shadow-inner rounded dark:shadow-inner;
   @apply bg-gray-300;
   @apply dark:bg-gray-700;
-}
-
-.basic-text {
-  @apply text-gray-950 ;
-  @apply dark:text-gray-100;
 }
 
 .standard-button {
@@ -117,4 +122,8 @@
 
 .no-min-height {
   @apply min-h-0;
+}
+
+.journey-width {
+  width: 230px;
 }

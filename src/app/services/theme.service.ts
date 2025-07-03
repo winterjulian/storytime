@@ -4,22 +4,27 @@ import {Injectable} from '@angular/core';
   providedIn: 'root'
 })
 export class ThemeService {
+  // all copied from superb-calendar
 
   constructor() {
-    // this.scanPreferences();
+    this.scanPreferences();
     this.scanLocalStorage();
     // this.setTheme();
   }
 
   private darkMode: boolean = false;
 
+  // ======
   // GETTER
+  // ======
 
   getIfDisplayModeIsDark(): boolean {
     return this.darkMode;
   }
 
+  // ======
   // SETTER
+  // ======
 
   setDisplayMode(darkMode: boolean) {
     this.darkMode = darkMode;
@@ -31,6 +36,10 @@ export class ThemeService {
   scanPreferences() {
     this.darkMode = window.matchMedia("(prefers-color-scheme: dark)").matches
   }
+
+  // ======
+  // OTHERS
+  // ======
 
   scanLocalStorage() {
     const darkMode = localStorage.getItem("darkMode");
@@ -50,6 +59,8 @@ export class ThemeService {
     }
   }
 
+  // only relevant in superb-calendar
+  
   // private setTheme() {
   //   if (this.darkMode) {
   //     document.body.classList.add('dark-theme');

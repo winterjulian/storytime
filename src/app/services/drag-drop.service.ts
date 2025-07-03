@@ -136,7 +136,7 @@ export class DragDropService {
   }
 
   private reverseCommand(command: DropCommand) {
-    // Todo: Change? Very redundant (see executeDrop) <.<
+    // Todo: Change: very redundant (see executeDrop())
     const sourceArray = this.store.containerMap.get(command.sourceContainerId);
     const targetArray = this.store.containerMap.get(command.targetContainerId);
 

@@ -1,6 +1,9 @@
 @if (userJourneyService.isCreatingNewUserJourney()) {
   <div class="journey-card mr-4">
-    <app-input-field [form]="form" (accept)="acceptUserStory()" (cancel)="cancelUserStory()"></app-input-field>
+    <app-input-field
+      [form]="form"
+      (accept)="acceptUserStory()"
+      (cancel)="cancelUserStory()"></app-input-field>
   </div>
 }
 

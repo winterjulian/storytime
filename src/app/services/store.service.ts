@@ -49,6 +49,7 @@ export class StoreService {
       return;
     }
 
+    // sorting data here, indexedDB too complicated for easy stuff like that
     this.sortData(journeys);
 
     const result = journeys.map(journey => {
@@ -99,7 +100,7 @@ export class StoreService {
 
   public deleteJourney(journey: UserJourney): void {
     this.db.deleteJourneyCascade(journey.id);
-    // TODO: this.db.loadIssues() ?
+    // reloading issues after deletion (clean issue situation)
     this.db.loadIssues();
     journey.userSteps.forEach((userStep: UserStep) => {
       this.deleteStepFromJourney(userStep);
@@ -136,7 +137,7 @@ export class StoreService {
 
   public deleteStep(step: UserStep): void {
     this.db.deleteStepCascade(step.id);
-    // TODO: this.db.loadIssues() ?
+    // reloading issues after deletion (clean issue situation)
     this.db.loadIssues();
     this.refreshGitlabIssues();
     this.deleteStepFromJourney(step);

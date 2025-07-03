@@ -1,7 +1,8 @@
+/* CSS? => Because Tailwind 4 + SCSS not working! (no suggestions) */
+
 @import "tailwindcss";
 @import "./app/styles/tailwind.scss";
 @import "./app/styles/popup.scss";
-@import "./app/styles/specifics.scss";
 
 @custom-variant dark (&:where(.dark, .dark *));
 

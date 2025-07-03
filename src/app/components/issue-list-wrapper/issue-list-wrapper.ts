@@ -1,5 +1,4 @@
 import {Component, inject, input, OnInit} from '@angular/core';
-import {UserJourney} from '../../interfaces/user-journey';
 import {UserStep} from '../../interfaces/user-step';
 import {DragDropService} from '../../services/drag-drop.service';
 import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
@@ -18,10 +17,9 @@ import {DropEventData} from '../../interfaces/drop-event-data';
   styleUrl: './issue-list-wrapper.scss'
 })
 export class IssueListWrapper implements OnInit {
-  // TODO: Rename => IssueWrapper / IssueDropZoneWrapper?
+  // TODO: Rename: IssueWrapper / IssueDropZoneWrapper?
   public dragDropService = inject(DragDropService);
   public store = inject(StoreService);
-  public userJourney = input.required<UserJourney>();
   public userStep = input.required<UserStep>();
 
   public dropZones = this.dragDropService.connectedDropZones;
@@ -29,8 +27,8 @@ export class IssueListWrapper implements OnInit {
 
   ngOnInit() {
     this.dropZoneId =
-      'drop-' + this.userJourney().id + '-' + this.userStep().id;
-    this.dragDropService.registerDropZone(this.dropZoneId); // to have the zone as drop zone available globally
+      'drop-' + this.userStep().journeyId + '-' + this.userStep().id;
+    this.dragDropService.registerDropZone(this.dropZoneId);
     this.store.registerContainerReference(
       this.dropZoneId,
       this.userStep().issues,

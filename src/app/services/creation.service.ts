@@ -18,7 +18,7 @@ export class CreationService {
 
   private scrollToElement(elementId: string) {
     const element = document.getElementById(elementId);
-    // timeout 0s so angular updates dom first before doing scroll
+    // timeout 0s so angular updates dom before doing scroll
     setTimeout(() => {
       if (element) {
         element.scrollIntoView({

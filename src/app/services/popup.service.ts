@@ -17,6 +17,7 @@ export class PopupService {
     component?: Type<any>,
     callbacks?: { accept?: () => void; cancel?: () => void }
   ) {
+    // maybe for later
     this.title.set(undefined);
     this.message.set(undefined);
     if (component) {

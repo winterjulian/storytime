@@ -5,6 +5,7 @@ import {DbUserStep} from './models/db-user-step.model';
 import {DbStepIssue} from './models/db-step-issue.model';
 import {DbRelease} from './models/db-release.model';
 
+// db schema necessary for library "idb"
 type DBSchema = {
   journeys: DbUserJourney;
   steps: DbUserStep;
@@ -16,6 +17,7 @@ type DBSchema = {
 export class IndexedDbService {
   private dbPromise: Promise<IDBPDatabase<DBSchema>>;
 
+  // for the store to grabby-grab
   journeys = signal<DbUserJourney[] | undefined>(undefined);
   steps = signal<DbUserStep[] | undefined>(undefined);
   issues = signal<DbStepIssue[] | undefined>(undefined);
@@ -24,6 +26,7 @@ export class IndexedDbService {
   constructor() {
     this.dbPromise = this.initDB();
     this.loadAll();
+    // tx = transaction
   }
 
   private async initDB() {
@@ -38,6 +41,7 @@ export class IndexedDbService {
   }
 
   async loadAll() {
+    // set all undefined so no userJourneys are created with outdated data
     this.journeys.set(undefined);
     this.steps.set(undefined);
     this.issues.set(undefined);
@@ -51,6 +55,7 @@ export class IndexedDbService {
   }
 
   async loadIssues() {
+    // maybe needed later
     this.issues.set(undefined);
     const db = await this.dbPromise;
     this.issues.set(await db.getAll('issues'));
@@ -89,13 +94,17 @@ export class IndexedDbService {
     // for (const step of stepsToDelete) {
     //   await this.deleteStepCascade(step.id, tx);
     // }
-    // Problem: tx might be already inactive bc done even though loop is still running, changing to Promise.all
+    // Problem: tx might be already inactive bc done even though loop is still running
+    // => changing to Promise.all
     await Promise.all(
       stepsToDelete.map(step => this.deleteStepCascade(step.id, tx))
     );
 
     await tx.done;
-    this.loadAll();
+    // reloading only after tx done!
+    if (stepsToDelete.length === 0) {
+      this.loadAll();
+    }
   }
 
   async deleteStepCascade(
@@ -125,54 +134,6 @@ export class IndexedDbService {
   }
 
   // ========
-  // RELEASES
-  // ========
-
-  async addRelease(release: DbRelease) {
-    const db = await this.dbPromise;
-    await db.put('releases', release);
-    this.releases.update(list => (list ? [...list, release] : [release]));
-  }
-
-  async deleteRelease(id: string) {
-    const db = await this.dbPromise;
-    await db.delete('releases', id);
-    this.releases.update(list => (list ? list.filter(r => r.id !== id) : []));
-
-    this.issues.update(list =>
-      list
-        ? list.map(issue =>
-          issue.releaseId === id ? {...issue, releaseId: undefined} : issue
-        )
-        : []
-    );
-  }
-
-  async removeIssueFromRelease(issueId: string) {
-    const db = await this.dbPromise;
-    const issue = await db.get('issues', issueId);
-    if (issue) {
-      issue.releaseId = undefined;
-      await db.put('issues', issue);
-      this.issues.update(list =>
-        list ? list.map(i => (i.id === issueId ? {...i, releaseId: undefined} : i)) : []
-      );
-    }
-  }
-
-  async assignIssueToRelease(issueId: string, releaseId: string) {
-    const db = await this.dbPromise;
-    const issue = await db.get('issues', issueId);
-    if (issue) {
-      issue.releaseId = releaseId;
-      await db.put('issues', issue);
-      this.issues.update(list =>
-        list ? list.map(i => (i.id === issueId ? {...i, releaseId} : i)) : []
-      );
-    }
-  }
-
-  // ========
   // CLEAR DB
   // ========
 
@@ -181,6 +142,7 @@ export class IndexedDbService {
 
     return new Promise<void>(() => {
       const deleteRequest = indexedDB.deleteDatabase(dbName);
+      // unsure if .onFunctions() mandatory
       deleteRequest.onsuccess = () => {
         console.log('Deletion complete <3');
       };
