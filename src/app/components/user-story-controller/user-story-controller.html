@@ -2,7 +2,7 @@
   <div class="flex">
     <button
       (click)="undo()"
-      [disabled]="dragDropService.canUndo()"
+      [disabled]="dragDropService.isUndoDisabled()"
       class="standard-button mr-2"
     >
       <div class="flex justify-center">
@@ -11,7 +11,7 @@
     </button>
     <button
       (click)="redo()"
-      [disabled]="dragDropService.canRedo()"
+      [disabled]="dragDropService.isRedoDisabled()"
       class="standard-button mr-2"
     >
       <div class="flex justify-center">

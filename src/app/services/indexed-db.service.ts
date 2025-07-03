@@ -38,6 +38,7 @@ export class IndexedDbService {
   }
 
   async loadAll() {
+    console.log('>>> loadAll');
     this.journeys.set(undefined);
     this.steps.set(undefined);
     this.issues.set(undefined);
@@ -97,12 +98,18 @@ export class IndexedDbService {
     const allSteps = await stepsStore.getAll();
     const stepsToDelete = allSteps.filter(step => step.journeyId === journeyId);
 
-    for (const step of stepsToDelete) {
-      await this.deleteStepCascade(step.id, tx);
+    if (!stepsToDelete.length) {
+      this.loadAll();
     }
 
+    // for (const step of stepsToDelete) {
+    //   await this.deleteStepCascade(step.id, tx);
+    // }
+    // problem: tx might be already inactive bc done even though loop is still running, changing to Promise.all
+    await Promise.all(
+      stepsToDelete.map(step => this.deleteStepCascade(step.id, tx))
+    );
     await tx.done;
-    this.journeys.update(list => list?.filter(j => j.id !== journeyId) ?? []);
   }
 
   async deleteStepCascade(
@@ -114,8 +121,8 @@ export class IndexedDbService {
     >
   ) {
     const db = await this.dbPromise;
-    const localTx = tx ?? db.transaction(['steps', 'issues'] as const, 'readwrite');
 
+    const localTx = tx ?? db.transaction(['steps', 'issues'] as const, 'readwrite');
     const stepsStore = localTx.objectStore('steps');
     const issuesStore = localTx.objectStore('issues');
 
@@ -127,11 +134,8 @@ export class IndexedDbService {
       await issuesStore.delete(issue.id);
     }
 
-    if (!tx) {
-      this.steps.update(list => list?.filter(s => s.id !== stepId) ?? []);
-      this.issues.update(list => list?.filter(i => i.stepId !== stepId) ?? []);
-      await localTx.done;
-    }
+    await localTx.done;
+    this.loadAll();
   }
 
   async removeIssueFromRelease(issueId: string) {

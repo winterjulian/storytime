@@ -1,10 +1,15 @@
-<div class="step-card">
-  <div class="flex flex-col justify-between">
-    <div>
-      {{ userStep().title }}
-    </div>
+<div class="flex flex-col justify-between step-card">
+  <div>
+    {{ userStep().title }}
+  </div>
+  <div class="flex flex-row justify-between h-full">
     <div class="text-xs">
-      {{ userStep().id }}
+      <!--- content? --->
+    </div>
+    <div class="flex items-end text-xs">
+      <div class="clickable-icons" (click)="deleteStep()">
+        <i class="material-icons !text-sm">delete</i>
+      </div>
     </div>
   </div>
 </div>

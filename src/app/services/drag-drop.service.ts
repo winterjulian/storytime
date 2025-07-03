@@ -9,6 +9,7 @@ import {DropCommand} from '../interfaces/drop-command';
 import {UserStep} from '../interfaces/user-step';
 import {StoreService} from './store.service';
 import {DropEventData} from '../interfaces/drop-event-data';
+import {UserJourney} from '../interfaces/user-journey';
 
 @Injectable({providedIn: 'root'})
 export class DragDropService {
@@ -18,15 +19,26 @@ export class DragDropService {
   public commandHistory: DropCommand[] = [];
   public currentHistoryIndex = signal<number>(-1);
 
-  public canUndo = computed(() => {
+  public isUndoDisabled = computed(() => {
     return this.currentHistoryIndex() === -1;
   });
-  public canRedo = computed(() => {
+  public isRedoDisabled = computed(() => {
     return this.currentHistoryIndex() >= this.commandHistory.length - 1;
   });
 
   public registerDropZone(connectedDropZone: string) {
+    console.log('>>> registerDropZone');
     this.connectedDropZones.update((array) => [...array, connectedDropZone]);
+  }
+
+  public removeAllDropZonesFromJourney(journey: UserJourney): void {
+    journey.userSteps.forEach((step) => {
+      this.removeAllDropZonesFromStep(step)
+    })
+  }
+
+  public removeAllDropZonesFromStep(step: UserStep) {
+    this.removeDropZone('drop-' + step.journeyId + '-' + step.id);
   }
 
   public removeDropZone(connectedDropZone: string) {
@@ -116,6 +128,11 @@ export class DragDropService {
       );
       this.store.transferIssues(command.item, command.sourceStepId);
     }
+  }
+
+  public clearHistory(): void {
+    this.commandHistory = [];
+    this.currentHistoryIndex.set(-1);
   }
 
   private addToHistory(command: DropCommand) {

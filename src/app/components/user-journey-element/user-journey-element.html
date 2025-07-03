@@ -1,11 +1,15 @@
-<div class="journey-card flex flex-col">
-  @let journey = userJourney();
+<div class="flex flex-col justify-between journey-card">
   <div>
-    {{ journey.title }}
+    {{ userJourney().title }}
   </div>
-  <div class="flex justify-end text-xs">
-    <div class="clickable-icons" (click)="deleteJourney(journey.id)">
-      <i class="material-icons !text-sm">delete</i>
+  <div class="flex flex-row justify-between h-full">
+    <div>
+      <!--- content? --->
+    </div>
+    <div class="flex items-end text-xs">
+      <div class="clickable-icons" (click)="deleteJourney()">
+        <i class="material-icons !text-sm">delete</i>
+      </div>
     </div>
   </div>
 </div>
