@@ -28,6 +28,8 @@
 }
 
 .standard-button {
+  @apply flex;
+  /* necessary to prevent elongated button at bottom? O.o */
   @apply p-2 rounded;
   @apply cursor-pointer;
   @apply bg-gray-700 text-gray-200 hover:bg-gray-500;
@@ -74,6 +76,24 @@
 
 /* OTHERS */
 
+.release-spacer {
+  @apply min-h-32 min-w-36 max-w-36;
+  @apply flex items-center;
+}
+
+.toned-down-text {
+  @apply text-gray-400;
+  @apply dark:text-gray-500;
+}
+
+.user-step-creator-spacer {
+  @apply min-w-8;
+}
+
+.shadow-inner-xl {
+  box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.6);
+}
+
 .add-step-button {
   @apply cursor-pointer;
   @apply rounded-xl;
@@ -93,4 +113,8 @@
   @apply h-50 w-90 p-4 rounded;
   @apply bg-gray-100;
   @apply dark:bg-gray-700;
+}
+
+.no-min-height {
+  @apply min-h-0;
 }

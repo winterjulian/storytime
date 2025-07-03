@@ -1,0 +1,23 @@
+<div>
+  <div class="flex-row inline-flex">
+    @for (journey of userJourneys(); track journey.id) {
+      @if (journey.userSteps.length > 0) {
+        @for (userStep of journey.userSteps; track userStep.id) {
+          <app-release-element-drop-slot
+            [journey]="journey"
+            [userStep]="userStep"
+            [releaseId]="releaseId"
+            class="release-spacer mr-2 rounded shadow-inner-xl">
+          </app-release-element-drop-slot>
+        }
+        <div class="user-step-creator-spacer mr-4">
+          <!--- spacer for (+) step add function --->
+        </div>
+      } @else {
+        <div class="release-spacer toned-down-text mr-4 rounded text-xs">
+          {{ hint }}
+        </div>
+      }
+    }
+  </div>
+</div>

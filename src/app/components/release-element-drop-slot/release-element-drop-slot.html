@@ -1,0 +1,13 @@
+<div
+  [id]="dropZoneId"
+  cdkDropList
+  class="w-full h-full"
+  [cdkDropListData]="{ stepIssues: temporaryIssues, stepId: userStep().id }"
+  [cdkDropListConnectedTo]="dropZones()"
+  (cdkDropListDropped)="onExecuteDrop($event)">
+  @for (issue of temporaryIssues; track issue.id) {
+    <div>
+      <app-issue-element [issue]="issue"></app-issue-element>
+    </div>
+  }
+</div>

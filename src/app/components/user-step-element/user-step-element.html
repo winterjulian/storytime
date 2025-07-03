@@ -1,11 +1,10 @@
 <div class="flex flex-col justify-between step-card">
-  <div>
+  <div class="text-sm">
     {{ userStep().title }}
   </div>
   <div class="flex flex-row justify-between h-full">
     <div class="text-xs">
       <!--- content? --->
-      {{ userStep().id }}
     </div>
     <div class="flex items-end text-xs">
       <div class="clickable-icons" (click)="deleteStep()">

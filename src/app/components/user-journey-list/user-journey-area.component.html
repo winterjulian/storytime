@@ -1,29 +1,38 @@
-<div class="flex flex-row w-full h-full pl-4 transition-all duration-300 ease-out transform">
-  @for (userJourney of userJourneys(); track userJourney.id) {
-    <!--- display existing journeys --->
-    <div class="pr-4">
+<div class="w-full h-full pl-4">
+  <div class="flex flex-row">
+    <div class="release-spacer"></div>
+    @for (userJourney of userJourneys(); track userJourney.id) {
+      <!--- display existing journeys --->
+      <div class="flex flex-col pr-4">
 
-      <div class="mb-2">
-        <app-user-journey-element
-          [userJourney]="userJourney"
-        ></app-user-journey-element>
+        <div class="mb-2">
+          <app-user-journey-element
+            [userJourney]="userJourney"
+          ></app-user-journey-element>
+        </div>
+
+        <div class="flex flex-row justify-center h-full">
+          @for (userStep of userJourney.userSteps; track userStep.id) {
+            <div class="flex flex-col mr-2">
+              <div>
+                <app-user-step-element
+                  [userStep]="userStep"
+                  [userJourney]="userJourney"
+                ></app-user-step-element>
+              </div>
+              <div class="h-full">
+                <app-issue-list-wrapper [userJourney]="userJourney" [userStep]="userStep"></app-issue-list-wrapper>
+              </div>
+            </div>
+          }
+          <app-user-step-element-create [userJourney]="userJourney"></app-user-step-element-create>
+        </div>
+
       </div>
-
-      <div class="flex flex-row justify-center">
-        @for (userStep of userJourney.userSteps; track userStep.id) {
-          <div class="mr-2">
-            <app-user-step-element
-              [userStep]="userStep"
-              [userJourney]="userJourney"
-            ></app-user-step-element>
-            <app-issue-list-wrapper [userJourney]="userJourney" [userStep]="userStep"></app-issue-list-wrapper>
-          </div>
-        }
-        <app-user-step-element-create [userJourney]="userJourney"></app-user-step-element-create>
-      </div>
-
-    </div>
-  }
-  <app-user-journey-element-create></app-user-journey-element-create>
+    }
+    <app-user-journey-element-create></app-user-journey-element-create>
+  </div>
+  <div class="w-full">
+    <app-releases></app-releases>
+  </div>
 </div>
-<!--<div>RELEASES?</div>-->

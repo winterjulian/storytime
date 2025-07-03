@@ -1,4 +1,4 @@
-import {Component,} from '@angular/core';
+import {Component, inject,} from '@angular/core';
 import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
 import {IssueList} from '../../components/issue-list/issue-list';
 import {StoreService} from '../../services/store.service';
@@ -14,11 +14,7 @@ import {UI_TEXTS as uiTexts} from '../../constants/ui-texts';
   styleUrl: './user-story-manager.scss',
 })
 export class UserStoryManager {
-  public journeyTitle = '';
-  public selectionTitle = '';
-
-  constructor(public store: StoreService) {
-    this.journeyTitle = uiTexts.general.userJourneyAreaTitle;
-    this.selectionTitle = uiTexts.general.openIssuesAreaTitle;
-  }
+  public store = inject(StoreService)
+  public journeyTitle = uiTexts.general.userJourneyAreaTitle;
+  public selectionTitle = uiTexts.general.userJourneyAreaTitle;
 }

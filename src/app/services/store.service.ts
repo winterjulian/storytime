@@ -6,6 +6,7 @@ import {FormGroup} from '@angular/forms';
 import {IndexedDbService} from './indexed-db.service';
 import {GitlabIssuesService} from './gitlab-issues.service';
 import {DbStepIssue} from './models/db-step-issue.model';
+import {Release} from '../interfaces/release';
 
 @Injectable({providedIn: 'root'})
 export class StoreService {
@@ -22,6 +23,7 @@ export class StoreService {
     const gitlabAll = this.gitlabIssuesService.getIssues();
     return this.filterGitlabIssues(dbIssues, gitlabAll);
   });
+  public releases = signal<Array<Release>>([]);
 
   constructor() {
     this.loadUserJourneysFromDb();
@@ -175,8 +177,8 @@ export class StoreService {
     })
   }
 
-  public removeContainerMapReferencesByStep(step: UserStep, journeyId: string): void {
-    const id = 'drop-' + journeyId + '-' + step.id
+  public removeContainerMapReferencesByStep(step: UserStep, journeyOrReleaseId: string): void {
+    const id = 'drop-' + journeyOrReleaseId + '-' + step.id
     this.containerMap.delete(id);
   }
 

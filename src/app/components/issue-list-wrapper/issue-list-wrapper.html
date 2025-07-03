@@ -4,8 +4,7 @@
   [cdkDropListData]="{ stepIssues: userStep().issues, stepId: userStep().id }"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)"
-  class="flex flex-col mt-2 h-full">
-  <div>{{ userStep().issues.length }}</div>
+  class="flex flex-col mt-2 release-spacer h-full rounded">
   @for (issue of userStep().issues; track issue.id) {
     <div>
       <app-issue-element [issue]="issue"></app-issue-element>

@@ -1,7 +1,8 @@
 export const UI_TEXTS = {
   general: {
     userJourneyAreaTitle: 'User Journeys 📜',
-    openIssuesAreaTitle: 'Open Issues ✨'
+    openIssuesAreaTitle: 'Open Issues ✨',
+    releasesArea: 'Releases 🏆'
   },
   popup: {
     deleteJourneyTitle: 'Delete this journey?',
@@ -10,5 +11,8 @@ export const UI_TEXTS = {
     deleteStepText: 'By deleting this step, corresponding tickets will be put back into the selection area.',
     purgeDBTitle: 'Purge Database?',
     purgeDBText: 'By accepting, all data in indexedDB will be deleted. Proceed?',
+  },
+  releases: {
+    addStepHint: 'Add a step to the journey to receive a slot.'
   }
 } as const;
