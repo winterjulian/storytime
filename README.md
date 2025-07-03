@@ -1,6 +1,6 @@
 # Storytime
 
-![Screenshot 2025-07-04 005140.png](../../Pictures/Screenshots/Screenshot%202025-07-04%20005140.png)
+![Screenshot 2025-07-04 005140](https://github.com/user-attachments/assets/13459991-341f-48d6-8b5a-cbbd852e9a10)
 
 ### Development Setup
 
