@@ -27,7 +27,6 @@ export class UserStoryManager {
 
   constructor() {
     // effect(() => {
-    //   console.log('=> SCROLL');
     //   this.creationService.isCreatingNewElement()
     //     ? this.titledCard.scrollToRight()
     //     : null;

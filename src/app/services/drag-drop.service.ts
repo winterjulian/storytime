@@ -8,6 +8,7 @@ import {StepIssue} from '../interfaces/step-issue';
 import {DropCommand} from '../interfaces/drop-command';
 import {UserStep} from '../interfaces/user-step';
 import {StoreService} from './store.service';
+import {DropEventData} from '../interfaces/drop-event-data';
 
 @Injectable({providedIn: 'root'})
 export class DragDropService {
@@ -38,53 +39,45 @@ export class DragDropService {
   private containerMap = new Map<string, StepIssue[]>();
 
   registerContainer(id: string, data: StepIssue[]) {
-    console.log('> registerContainer');
     this.containerMap.set(id, data);
   }
 
-  executeDropCommand(event: CdkDragDrop<StepIssue[]>, userStep?: UserStep) {
+  executeDropCommand(event: CdkDragDrop<DropEventData>) {
     const command = this.generateCommandObject(event);
-    this.executeDrop(command, userStep);
+    this.executeDrop(command);
     this.addToHistory(command);
   }
 
-  private generateCommandObject(event: CdkDragDrop<StepIssue[]>): DropCommand {
+  private generateCommandObject(event: CdkDragDrop<DropEventData>): DropCommand {
     return {
       type:
         event.previousContainer === event.container ? 'reorder' : 'transfer',
+      sourceStepId: event.previousContainer.data.stepId,
+      targetStepId: event.container.data.stepId,
       sourceContainerId: event.previousContainer.id,
       targetContainerId: event.container.id,
       sourceIndex: event.previousIndex,
       targetIndex: event.currentIndex,
-      item: event.previousContainer.data[event.previousIndex],
+      item: event.previousContainer.data.stepIssues[event.previousIndex],
     };
   }
 
-  private executeDrop(command: DropCommand, userStep?: UserStep) {
-    const sourceId = command.sourceContainerId;
-    const targetId = command.targetContainerId;
+  private executeDrop(command: DropCommand) {
     const sourceArray = this.containerMap.get(command.sourceContainerId);
     const targetArray = this.containerMap.get(command.targetContainerId);
-
-    if (userStep) {
-      console.log('Target Array === userStep().issues',
-        targetArray === userStep.issues);
-    }
 
     if (!sourceArray || !targetArray) return;
 
     if (command.type === 'reorder') {
       moveItemInArray(sourceArray, command.sourceIndex, command.targetIndex);
     } else {
-      console.log('transferArrayItem()')
       transferArrayItem(
         sourceArray,
         targetArray,
         command.sourceIndex,
         command.targetIndex,
       );
-
-      this.store.transferIssues(command.item, userStep?.id);
+      this.store.transferIssues(command.item, command.targetStepId);
     }
   }
 
@@ -94,6 +87,7 @@ export class DragDropService {
     const command = this.commandHistory[this.currentHistoryIndex()];
     this.reverseCommand(command);
     this.currentHistoryIndex.update((v) => v - 1);
+
     return true;
   }
 
@@ -120,6 +114,7 @@ export class DragDropService {
         command.targetIndex,
         command.sourceIndex,
       );
+      this.store.transferIssues(command.item, command.sourceStepId);
     }
   }
 

@@ -18,7 +18,7 @@ import {CreationService} from '../../services/creation.service';
   styleUrl: './input-field.scss',
 })
 export class InputField implements OnInit, AfterViewInit {
-  @ViewChild('inputField') inputRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('inputField', {static: false}) inputRef!: ElementRef;
 
   public creationService = inject(CreationService);
 
@@ -49,7 +49,6 @@ export class InputField implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.creationService.setIsCreatingNewElement(true);
-    this.inputRef.nativeElement.focus();
   }
 
   ngAfterViewInit() {

@@ -2,7 +2,7 @@
   id="issue-source"
   cdkDropList
   class="h-full p-4 pb-2 pt-0"
-  [cdkDropListData]="issues()"
+  [cdkDropListData]="{ stepIssues: issues(), stepId: 'issue-list' }"
   [cdkDropListConnectedTo]="dropZones()"
   (cdkDropListDropped)="onExecuteDrop($event)">
   <div style="border: 1px solid transparent">

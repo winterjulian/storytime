@@ -5,6 +5,7 @@ import {CdkDragDrop, CdkDropList} from '@angular/cdk/drag-drop';
 import {DragDropService} from '../../services/drag-drop.service';
 import {StoreService} from '../../services/store.service';
 import {DbStepIssue} from '../../services/models/db-step-issue.model';
+import {DropEventData} from '../../interfaces/drop-event-data';
 
 @Component({
   selector: 'app-issue-list',
@@ -25,7 +26,6 @@ export class IssueList {
       const currentIssues = this.store.gitlabIssues();
       if (currentIssues.length > 0) {
         this.issues.set(currentIssues);
-        console.log('registerContainer-x');
         this.dragDropService.registerContainer('issue-source', currentIssues);
       }
     });
@@ -36,9 +36,9 @@ export class IssueList {
   //   this.dragDropService.registerContainer('issue-source', this.issues());
   // }
 
-  public onExecuteDrop(event: CdkDragDrop<StepIssue[]>) {
+  public onExecuteDrop(event: CdkDragDrop<DropEventData>) {
     this.dragDropService.executeDropCommand(event);
-    const issue: DbStepIssue = event.item.data;
+    // const issue: DbStepIssue = event.item.data;
     // this.store.deleteIssueFromStep(issue);
   }
 }

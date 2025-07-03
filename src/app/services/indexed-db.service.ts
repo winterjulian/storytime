@@ -1,5 +1,5 @@
 import {Injectable, signal} from '@angular/core';
-import {openDB, IDBPDatabase} from 'idb';
+import {openDB, IDBPDatabase, IDBPTransaction} from 'idb';
 import {DbUserJourney} from './models/db-user-journey.model';
 import {DbUserStep} from './models/db-user-step.model';
 import {DbStepIssue} from './models/db-step-issue.model';
@@ -38,7 +38,6 @@ export class IndexedDbService {
   }
 
   async loadAll() {
-    console.log('loadAll');
     this.journeys.set(undefined);
     this.steps.set(undefined);
     this.issues.set(undefined);
@@ -49,35 +48,31 @@ export class IndexedDbService {
     this.steps.set(await db.getAll('steps'));
     this.issues.set(await db.getAll('issues'));
     this.releases.set(await db.getAll('releases'));
-
-    console.log(this.journeys());
-    console.log(this.steps());
   }
 
   async addJourney(journey: DbUserJourney) {
     const db = await this.dbPromise;
     await db.put('journeys', journey);
-    this.journeys.update(list => (list ? [...list, journey] : [journey]));
+    // this.journeys.update(list => (list ? [...list, journey] : [journey]));
+    this.loadAll();
   }
 
   async addStep(step: DbUserStep) {
     const db = await this.dbPromise;
     await db.put('steps', step);
-    this.steps.update(list => (list ? [...list, step] : [step]));
+    // this.steps.update(list => (list ? [...list, step] : [step]));
   }
 
   async addIssue(issue: DbStepIssue) {
-    console.log('>>> addIssue');
     const db = await this.dbPromise;
     await db.put('issues', issue);
-    this.issues.update(list => (list ? [...list, issue] : [issue]));
+    // this.issues.update(list => (list ? [...list, issue] : [issue]));
   }
 
   async deleteIssue(id: string) {
-    console.log('>>> deleteIssue');
     const db = await this.dbPromise;
     await db.delete('issues', id);
-    this.issues.update(list => (list ? list.filter(i => i.id !== id) : []));
+    // this.issues.update(list => (list ? list.filter(i => i.id !== id) : []));
   }
 
   async assignIssueToRelease(issueId: string, releaseId: string) {
@@ -94,37 +89,49 @@ export class IndexedDbService {
 
   async deleteJourneyCascade(journeyId: string) {
     const db = await this.dbPromise;
-    const tx = db.transaction(['journeys', 'steps', 'issues'], 'readwrite');
-
-    // Journey löschen
+    const tx = db.transaction(['journeys', 'steps', 'issues'] as const, 'readwrite');
+    // "as const" => bc TypeScript can t guarantee that array contains expected strings
     await tx.objectStore('journeys').delete(journeyId);
 
-    // Steps laden, die zu dieser Journey gehören
     const stepsStore = tx.objectStore('steps');
     const allSteps = await stepsStore.getAll();
     const stepsToDelete = allSteps.filter(step => step.journeyId === journeyId);
 
-    // Issues-Store
-    const issuesStore = tx.objectStore('issues');
-
-    // Alle passenden Steps + ihre Issues löschen
     for (const step of stepsToDelete) {
-      // Step löschen
-      await stepsStore.delete(step.id);
-
-      // Issues dieses Steps löschen
-      const allIssues = await issuesStore.getAll();
-      const issuesToDelete = allIssues.filter(issue => issue.stepId === step.id);
-      for (const issue of issuesToDelete) {
-        await issuesStore.delete(issue.id);
-      }
+      await this.deleteStepCascade(step.id, tx);
     }
 
     await tx.done;
-
     this.journeys.update(list => list?.filter(j => j.id !== journeyId) ?? []);
-    this.steps.update(list => list?.filter(s => s.journeyId !== journeyId) ?? []);
-    this.issues.update(list => list?.filter(i => !stepsToDelete.some(s => s.id === i.stepId)) ?? []);
+  }
+
+  async deleteStepCascade(
+    stepId: string,
+    tx?: IDBPTransaction<
+      DBSchema,
+      ['steps', 'issues'] | ['journeys', 'steps', 'issues'],
+      'readwrite'
+    >
+  ) {
+    const db = await this.dbPromise;
+    const localTx = tx ?? db.transaction(['steps', 'issues'] as const, 'readwrite');
+
+    const stepsStore = localTx.objectStore('steps');
+    const issuesStore = localTx.objectStore('issues');
+
+    await stepsStore.delete(stepId);
+
+    const allIssues = await issuesStore.getAll();
+    const issuesToDelete = allIssues.filter(issue => issue.stepId === stepId);
+    for (const issue of issuesToDelete) {
+      await issuesStore.delete(issue.id);
+    }
+
+    if (!tx) {
+      this.steps.update(list => list?.filter(s => s.id !== stepId) ?? []);
+      this.issues.update(list => list?.filter(i => i.stepId !== stepId) ?? []);
+      await localTx.done;
+    }
   }
 
   async removeIssueFromRelease(issueId: string) {
@@ -150,7 +157,6 @@ export class IndexedDbService {
     await db.delete('releases', id);
     this.releases.update(list => (list ? list.filter(r => r.id !== id) : []));
 
-    // Alle Issues, die dieses Release hatten, davon lösen
     this.issues.update(list =>
       list
         ? list.map(issue =>

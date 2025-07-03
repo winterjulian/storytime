@@ -38,7 +38,6 @@ export class CreationService {
 
   private scrollToElement(elementId: string) {
     const element = document.getElementById(elementId);
-    console.log(element);
     // timeout 0s so angular updates dom first before doing scroll
     setTimeout(() => {
       if (element) {

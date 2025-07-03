@@ -7,9 +7,6 @@ import {IndexedDbService} from './indexed-db.service';
 import {GitlabIssuesService} from './gitlab-issues.service';
 import {DbStepIssue} from './models/db-step-issue.model';
 import {CdkDragDrop} from '@angular/cdk/drag-drop';
-import {DbUserJourney} from './models/db-user-journey.model';
-import {DbUserStep} from './models/db-user-step.model';
-import {DbRelease} from './models/db-release.model';
 
 @Injectable({providedIn: 'root'})
 export class StoreService {
@@ -48,7 +45,6 @@ export class StoreService {
           }))
       ),
     }));
-
     console.log(returnValue);
     return returnValue;
   });
@@ -57,19 +53,13 @@ export class StoreService {
     return array.sort((a, b) => a.order - b.order);
   }
 
-  public getUserJourneys(): UserJourney[] {
-    return this.userJourneys();
-  }
-
   deleteJourney(id: string): void {
     this.db.deleteJourneyCascade(id);
   }
 
-  deleteStep(id: string): void {
-    this.db.deleteStep(id);
+  deleteStep(stepId: string): void {
+    this.db.deleteStepCascade(stepId);
   }
-
-  // SETTER
 
   createUserJourney(form: FormGroup, key: string) {
     const title = form.controls[key]?.value;
@@ -77,11 +67,16 @@ export class StoreService {
     const newJourney: UserJourney = {
       id: this.getRandomId(),
       title,
-      order: this.userJourneys().length,
+      order: this.determineOrder(this.userJourneys()),
       userSteps: [],
     };
 
     this.db.addJourney(newJourney);
+  }
+
+  determineOrder<T extends { order: number }>(array: T[]): number {
+    if (array.length === 0) return 0;
+    return Math.max(...array.map(e => e.order)) + 1;
   }
 
   createUserJourneyStep(
@@ -137,21 +132,16 @@ export class StoreService {
     // }
   }
 
-  transferIssues(item: StepIssue, targetId: string | undefined): void {
-    console.log(item);
-    console.log(targetId);
+  transferIssues(item: StepIssue, target: string): void {
     this.db.deleteIssue(item.id)
-    console.log({
-      ...item,
-      stepId: targetId
-    })
-    if (targetId) {
+    console.log(target);
+    if (target !== 'issue-list') {
+      // put-back issue will be part of issue-list reload
       this.db.addIssue({
         ...item,
-        stepId: targetId
+        stepId: target
       });
     }
-
   }
 
   isContainerEqualToPreviousContainer(event: CdkDragDrop<StepIssue[]>) {

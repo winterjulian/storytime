@@ -3,6 +3,7 @@ import {ThemeService} from '../../services/theme.service';
 import {IndexedDbService} from '../../services/indexed-db.service';
 import {StoreService} from '../../services/store.service';
 import {UserJourney} from '../../interfaces/user-journey';
+import {PopupService} from '../../services/popup.service';
 
 @Component({
   selector: 'app-header',
@@ -12,6 +13,7 @@ import {UserJourney} from '../../interfaces/user-journey';
   styleUrl: './header.scss',
 })
 export class Header implements OnInit {
+  public popupService = inject(PopupService);
   public themeService = inject(ThemeService);
   public db = inject(IndexedDbService);
   public store = inject(StoreService);
@@ -57,6 +59,14 @@ export class Header implements OnInit {
   }
 
   purgeDb() {
-    this.db.clearDatabaseCompletely();
+    this.popupService.openWithMessage(
+      'Purge Database?',
+      'By accepting, all data in indexedDB will be deleted. Proceed?',
+      {
+        accept: () => {
+          this.db.clearDatabaseCompletely();
+        }
+      }
+    )
   }
 }

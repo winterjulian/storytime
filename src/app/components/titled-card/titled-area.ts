@@ -19,8 +19,6 @@ export class TitledArea {
 
   scrollToRight() {
     const el = this.scrollContainer.nativeElement as HTMLElement;
-    console.log(el);
-    console.log(el.scrollWidth - el.clientWidth);
     el.scrollTo({
       left: el.scrollWidth - el.clientWidth,
       behavior: 'smooth',
