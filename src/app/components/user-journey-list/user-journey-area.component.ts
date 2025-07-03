@@ -14,6 +14,9 @@ import {IssueListWrapper} from '../issue-list-wrapper/issue-list-wrapper';
   styleUrl: './user-journey-area.component.scss',
 })
 export class UserJourneyArea {
+  // SERVICES
   public store = inject(StoreService);
+
+  // VARIABLES
   public userJourneys = this.store.userJourneys;
 }

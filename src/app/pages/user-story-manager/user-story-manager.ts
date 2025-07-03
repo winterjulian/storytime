@@ -1,16 +1,10 @@
-import {
-  Component,
-  effect,
-  ElementRef,
-  inject,
-  ViewChild,
-} from '@angular/core';
+import {Component,} from '@angular/core';
 import {UserStoryController} from '../../components/user-story-controller/user-story-controller';
 import {IssueList} from '../../components/issue-list/issue-list';
-import {CreationService} from '../../services/creation.service';
 import {StoreService} from '../../services/store.service';
 import {TitledArea} from '../../components/titled-card/titled-area';
 import {UserJourneyArea} from '../../components/user-journey-list/user-journey-area.component';
+import {UI_TEXTS as uiTexts} from '../../constants/ui-texts';
 
 @Component({
   selector: 'app-user-story-manager',
@@ -20,16 +14,11 @@ import {UserJourneyArea} from '../../components/user-journey-list/user-journey-a
   styleUrl: './user-story-manager.scss',
 })
 export class UserStoryManager {
-  public store = inject(StoreService);
-  public creationService = inject(CreationService);
+  public journeyTitle = '';
+  public selectionTitle = '';
 
-  @ViewChild('journeyCard') titledCard!: TitledArea;
-
-  constructor() {
-    // effect(() => {
-    //   this.creationService.isCreatingNewElement()
-    //     ? this.titledCard.scrollToRight()
-    //     : null;
-    // });
+  constructor(public store: StoreService) {
+    this.journeyTitle = uiTexts.general.userJourneyAreaTitle;
+    this.selectionTitle = uiTexts.general.openIssuesAreaTitle;
   }
 }

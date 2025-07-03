@@ -12,10 +12,11 @@ import {
   styleUrl: './titled-area.scss',
 })
 export class TitledArea {
-  public title = input<string>('');
+  // EXTRAS
+  @ViewChild('scrollContainer', {static: false}) scrollContainer!: ElementRef;
 
-  @ViewChild('scrollContainer', {static: false})
-  scrollContainer!: ElementRef;
+  // INPUTS & OUTPUTS
+  public title = input<string>('');
 
   scrollToRight() {
     const el = this.scrollContainer.nativeElement as HTMLElement;

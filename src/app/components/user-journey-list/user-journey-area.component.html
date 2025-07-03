@@ -1,4 +1,4 @@
-<div class="flex flex-row w-full h-full pl-4">
+<div class="flex flex-row w-full h-full pl-4 transition-all duration-300 ease-out transform">
   @for (userJourney of userJourneys(); track userJourney.id) {
     <!--- display existing journeys --->
     <div class="pr-4">
@@ -9,7 +9,6 @@
         ></app-user-journey-element>
       </div>
 
-
       <div class="flex flex-row justify-center">
         @for (userStep of userJourney.userSteps; track userStep.id) {
           <div class="mr-2">
@@ -17,9 +16,7 @@
               [userStep]="userStep"
               [userJourney]="userJourney"
             ></app-user-step-element>
-
-            <app-issue-list-wrapper [userJourney]="userJourney"
-                                    [userStep]="userStep"></app-issue-list-wrapper>
+            <app-issue-list-wrapper [userJourney]="userJourney" [userStep]="userStep"></app-issue-list-wrapper>
           </div>
         }
         <app-user-step-element-create [userJourney]="userJourney"></app-user-step-element-create>

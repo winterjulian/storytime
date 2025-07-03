@@ -1,12 +1,13 @@
 <div
   #scrollContainer
-  class="flex flex-col w-full h-full shadow-inner rounded dark:shadow-inner bg-gray-300 dark:bg-gray-700 overflow-auto"
+  class="flex flex-col w-full h-full titled-area overflow-auto"
 >
-  @if (title()) {
-    <div class="pl-4 p-2 pb-2">
+  <div class="pl-4 p-2 pb-2">
+    @if (title()) {
+      <!--- if around title, else inconsistent height with titles areas --->
       {{ title() }}
-    </div>
-  }
+    }
+  </div>
   <div class="h-full w-full">
     <ng-content></ng-content>
   </div>

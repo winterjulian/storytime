@@ -38,7 +38,6 @@ export class IndexedDbService {
   }
 
   async loadAll() {
-    console.log('>>> loadAll');
     this.journeys.set(undefined);
     this.steps.set(undefined);
     this.issues.set(undefined);
@@ -51,41 +50,30 @@ export class IndexedDbService {
     this.releases.set(await db.getAll('releases'));
   }
 
+  async loadIssues() {
+    this.issues.set(undefined);
+    const db = await this.dbPromise;
+    this.issues.set(await db.getAll('issues'));
+  }
+
   async addJourney(journey: DbUserJourney) {
     const db = await this.dbPromise;
     await db.put('journeys', journey);
-    // this.journeys.update(list => (list ? [...list, journey] : [journey]));
-    this.loadAll();
   }
 
   async addStep(step: DbUserStep) {
     const db = await this.dbPromise;
     await db.put('steps', step);
-    // this.steps.update(list => (list ? [...list, step] : [step]));
   }
 
   async addIssue(issue: DbStepIssue) {
     const db = await this.dbPromise;
     await db.put('issues', issue);
-    // this.issues.update(list => (list ? [...list, issue] : [issue]));
   }
 
   async deleteIssue(id: string) {
     const db = await this.dbPromise;
     await db.delete('issues', id);
-    // this.issues.update(list => (list ? list.filter(i => i.id !== id) : []));
-  }
-
-  async assignIssueToRelease(issueId: string, releaseId: string) {
-    const db = await this.dbPromise;
-    const issue = await db.get('issues', issueId);
-    if (issue) {
-      issue.releaseId = releaseId;
-      await db.put('issues', issue);
-      this.issues.update(list =>
-        list ? list.map(i => (i.id === issueId ? {...i, releaseId} : i)) : []
-      );
-    }
   }
 
   async deleteJourneyCascade(journeyId: string) {
@@ -98,18 +86,16 @@ export class IndexedDbService {
     const allSteps = await stepsStore.getAll();
     const stepsToDelete = allSteps.filter(step => step.journeyId === journeyId);
 
-    if (!stepsToDelete.length) {
-      this.loadAll();
-    }
-
     // for (const step of stepsToDelete) {
     //   await this.deleteStepCascade(step.id, tx);
     // }
-    // problem: tx might be already inactive bc done even though loop is still running, changing to Promise.all
+    // Problem: tx might be already inactive bc done even though loop is still running, changing to Promise.all
     await Promise.all(
       stepsToDelete.map(step => this.deleteStepCascade(step.id, tx))
     );
+
     await tx.done;
+    this.loadAll();
   }
 
   async deleteStepCascade(
@@ -138,17 +124,9 @@ export class IndexedDbService {
     this.loadAll();
   }
 
-  async removeIssueFromRelease(issueId: string) {
-    const db = await this.dbPromise;
-    const issue = await db.get('issues', issueId);
-    if (issue) {
-      issue.releaseId = undefined;
-      await db.put('issues', issue);
-      this.issues.update(list =>
-        list ? list.map(i => (i.id === issueId ? {...i, releaseId: undefined} : i)) : []
-      );
-    }
-  }
+  // ========
+  // RELEASES
+  // ========
 
   async addRelease(release: DbRelease) {
     const db = await this.dbPromise;
@@ -170,52 +148,47 @@ export class IndexedDbService {
     );
   }
 
-  async deleteJourney(journeyId: string) {
+  async removeIssueFromRelease(issueId: string) {
     const db = await this.dbPromise;
-
-    await db.delete('journeys', journeyId);
-    this.journeys.update(list => (list ? list.filter(j => j.id !== journeyId) : []));
-
-    const stepsToDelete = (this.steps() ?? []).filter(step => step.journeyId === journeyId);
-
-    for (const step of stepsToDelete) {
-      await this.deleteStep(step.id);
-    }
-
-    this.loadAll();
-  }
-
-  async deleteStep(stepId: string) {
-    const db = await this.dbPromise;
-
-    await db.delete('steps', stepId);
-    this.steps.update(list => (list ? list.filter(s => s.id !== stepId) : []));
-
-    const issuesToNeutralize = (this.issues() ?? []).filter(issue => issue.stepId === stepId);
-
-    // neutralize = set step and release ids to undefined
-    for (const issue of issuesToNeutralize) {
-      const updatedIssue = {...issue, stepId: undefined, releaseId: undefined};
-      await db.put('issues', updatedIssue);
+    const issue = await db.get('issues', issueId);
+    if (issue) {
+      issue.releaseId = undefined;
+      await db.put('issues', issue);
+      this.issues.update(list =>
+        list ? list.map(i => (i.id === issueId ? {...i, releaseId: undefined} : i)) : []
+      );
     }
   }
+
+  async assignIssueToRelease(issueId: string, releaseId: string) {
+    const db = await this.dbPromise;
+    const issue = await db.get('issues', issueId);
+    if (issue) {
+      issue.releaseId = releaseId;
+      await db.put('issues', issue);
+      this.issues.update(list =>
+        list ? list.map(i => (i.id === issueId ? {...i, releaseId} : i)) : []
+      );
+    }
+  }
+
+  // ========
+  // CLEAR DB
+  // ========
 
   async clearDatabaseCompletely() {
-    // Erst die DB-Instanz sicher schließen, falls offen (optional)
     const dbName = 'UserStoryMapDB';
 
-    return new Promise<void>((resolve, reject) => {
+    return new Promise<void>(() => {
       const deleteRequest = indexedDB.deleteDatabase(dbName);
       deleteRequest.onsuccess = () => {
-        console.log('IndexedDB komplett gelöscht');
-        resolve();
+        console.log('Deletion complete <3');
       };
       deleteRequest.onerror = () => {
-        console.error('Fehler beim Löschen der IndexedDB');
-        reject(deleteRequest.error);
+        console.error('Deletion erroneous :(');
       };
       deleteRequest.onblocked = () => {
-        console.warn('Löschung der IndexedDB blockiert');
+        console.warn('Deletion blocked :/?');
       };
     });
   }

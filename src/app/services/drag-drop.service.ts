@@ -14,11 +14,10 @@ import {UserJourney} from '../interfaces/user-journey';
 @Injectable({providedIn: 'root'})
 export class DragDropService {
   private store = inject(StoreService);
-  public connectedDropZones = signal<Array<string>>(['issue-source']);
 
   public commandHistory: DropCommand[] = [];
+  public connectedDropZones = signal<Array<string>>(['issue-source']);
   public currentHistoryIndex = signal<number>(-1);
-
   public isUndoDisabled = computed(() => {
     return this.currentHistoryIndex() === -1;
   });
@@ -26,8 +25,11 @@ export class DragDropService {
     return this.currentHistoryIndex() >= this.commandHistory.length - 1;
   });
 
+  // ==========
+  // DROP ZONES
+  // ==========
+
   public registerDropZone(connectedDropZone: string) {
-    console.log('>>> registerDropZone');
     this.connectedDropZones.update((array) => [...array, connectedDropZone]);
   }
 
@@ -42,17 +44,14 @@ export class DragDropService {
   }
 
   public removeDropZone(connectedDropZone: string) {
-    // TODO: Remove zones from deleted steps/journeys
     this.connectedDropZones.update((array) =>
       array.filter((element) => element !== connectedDropZone),
     );
   }
 
-  private containerMap = new Map<string, StepIssue[]>();
-
-  registerContainer(id: string, data: StepIssue[]) {
-    this.containerMap.set(id, data);
-  }
+  // =========
+  // DRAG&DROP
+  // =========
 
   executeDropCommand(event: CdkDragDrop<DropEventData>) {
     const command = this.generateCommandObject(event);
@@ -60,23 +59,9 @@ export class DragDropService {
     this.addToHistory(command);
   }
 
-  private generateCommandObject(event: CdkDragDrop<DropEventData>): DropCommand {
-    return {
-      type:
-        event.previousContainer === event.container ? 'reorder' : 'transfer',
-      sourceStepId: event.previousContainer.data.stepId,
-      targetStepId: event.container.data.stepId,
-      sourceContainerId: event.previousContainer.id,
-      targetContainerId: event.container.id,
-      sourceIndex: event.previousIndex,
-      targetIndex: event.currentIndex,
-      item: event.previousContainer.data.stepIssues[event.previousIndex],
-    };
-  }
-
   private executeDrop(command: DropCommand) {
-    const sourceArray = this.containerMap.get(command.sourceContainerId);
-    const targetArray = this.containerMap.get(command.targetContainerId);
+    const sourceArray: StepIssue[] | undefined = this.store.containerMap.get(command.sourceContainerId);
+    const targetArray: StepIssue[] | undefined = this.store.containerMap.get(command.targetContainerId);
 
     if (!sourceArray || !targetArray) return;
 
@@ -113,9 +98,47 @@ export class DragDropService {
     return true;
   }
 
+  // =======
+  // HISTORY
+  // =======
+
+  private addToHistory(command: DropCommand) {
+    // Cut history if in the middle of undo => kill the future (redo)
+    this.commandHistory = this.commandHistory.slice(
+      0,
+      this.currentHistoryIndex() + 1,
+    );
+    this.commandHistory.push(command);
+    this.currentHistoryIndex.update((v) => v + 1);
+  }
+
+  public clearHistory(): void {
+    this.commandHistory = [];
+    this.currentHistoryIndex.set(-1);
+  }
+
+  // =======
+  // HELPERS
+  // =======
+
+  private generateCommandObject(event: CdkDragDrop<DropEventData>): DropCommand {
+    return {
+      type:
+        event.previousContainer === event.container ? 'reorder' : 'transfer',
+      sourceStepId: event.previousContainer.data.stepId,
+      targetStepId: event.container.data.stepId,
+      sourceContainerId: event.previousContainer.id,
+      targetContainerId: event.container.id,
+      sourceIndex: event.previousIndex,
+      targetIndex: event.currentIndex,
+      item: event.previousContainer.data.stepIssues[event.previousIndex],
+    };
+  }
+
   private reverseCommand(command: DropCommand) {
-    const sourceArray = this.containerMap.get(command.sourceContainerId);
-    const targetArray = this.containerMap.get(command.targetContainerId);
+    // Todo: Change? Very redundant (see executeDrop) <.<
+    const sourceArray = this.store.containerMap.get(command.sourceContainerId);
+    const targetArray = this.store.containerMap.get(command.targetContainerId);
 
     if (command.type === 'reorder') {
       moveItemInArray(sourceArray!, command.targetIndex, command.sourceIndex);
@@ -128,20 +151,5 @@ export class DragDropService {
       );
       this.store.transferIssues(command.item, command.sourceStepId);
     }
-  }
-
-  public clearHistory(): void {
-    this.commandHistory = [];
-    this.currentHistoryIndex.set(-1);
-  }
-
-  private addToHistory(command: DropCommand) {
-    // Cut history if in the middle of undo => kill the future (redo)
-    this.commandHistory = this.commandHistory.slice(
-      0,
-      this.currentHistoryIndex() + 1,
-    );
-    this.commandHistory.push(command);
-    this.currentHistoryIndex.update((v) => v + 1);
   }
 }

@@ -5,15 +5,14 @@
 
   <div class="flex h-full overflow-hidden">
     <div class="flex-1/4 h-full p-4">
-      <app-titled-area #issueCard [title]="'Open Issues ✨'">
+      <app-titled-area [title]="this.selectionTitle">
         <app-issue-list class="h-full overflow-y-auto pb-2"></app-issue-list>
       </app-titled-area>
     </div>
     <div
-      #scrollContainer
       class="flex flex-3/4 h-full w-full p-4 pl-0 overflow-x-auto"
     >
-      <app-titled-area #journeyCard [title]="'User Journeys 📜'" class="w-full">
+      <app-titled-area [title]="this.journeyTitle" class="w-full">
         <app-user-journey-area
           class="overflow-x-auto h-full"
         ></app-user-journey-area>

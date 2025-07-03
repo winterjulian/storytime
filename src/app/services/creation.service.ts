@@ -3,30 +3,10 @@ import {Injectable, signal} from '@angular/core';
 @Injectable({providedIn: 'root'})
 export class CreationService {
   public isCreatingNewUserJourney = signal<boolean>(false);
-  public hasOpenedNewUserJourney = signal<boolean>(false);
-  public isCreatingUserJourney = signal<boolean>(false);
-  public isCreatingUserStep = signal<boolean>(false);
   public isCreatingNewElement = signal<boolean>(false);
 
   startCreatingNewUserJourney(): void {
     this.isCreatingNewUserJourney.set(true);
-  }
-
-  stopCreatingUserJourney(): void {
-    this.isCreatingNewUserJourney.set(false);
-    this.hasOpenedNewUserJourney.set(false);
-  }
-
-  triggerScrolling(): void {
-    this.hasOpenedNewUserJourney.set(true);
-  }
-
-  setIsCreatingNewUserJourney(bool: boolean): void {
-    this.isCreatingUserJourney.set(bool);
-  }
-
-  setIsCreatingUserStep(bool: boolean): void {
-    this.isCreatingUserStep.set(bool);
   }
 
   setIsCreatingNewElement(bool: boolean): void {

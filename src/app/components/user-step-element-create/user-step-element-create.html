@@ -1,7 +1,6 @@
 <div class="flex justify-center items-center h-22">
   @if (!isAddingUserStep()) {
-    <div (click)="setIsAddingUserStep()"
-         class="flex justify-center items-center rounded bg-blue-100 dark:bg-blue-950">
+    <div class="add-step-button flex justify-center items-center" (click)="setIsAddingUserStep()">
       <i class="material-icons">add</i>
     </div>
   } @else {

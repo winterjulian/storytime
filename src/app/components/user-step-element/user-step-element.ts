@@ -1,10 +1,10 @@
-import {Component, inject, input, OnInit, output} from '@angular/core';
+import {Component, inject, input, output} from '@angular/core';
 import {UserStep} from '../../interfaces/user-step';
 import {UserJourney} from '../../interfaces/user-journey';
-import {POPUP_TEXTS as popupTexts} from '../popup/popup-texts';
 import {StoreService} from '../../services/store.service';
 import {PopupService} from '../../services/popup.service';
 import {DragDropService} from '../../services/drag-drop.service';
+import {UI_TEXTS as uiTexts} from '../../constants/ui-texts';
 
 @Component({
   selector: 'app-user-step-element',
@@ -23,11 +23,12 @@ export class UserStepElement {
 
   deleteStep(): void {
     this.popupService.openWithMessage(
-      popupTexts.deleteStepTitle,
-      popupTexts.deleteStepText,
+      uiTexts.popup.deleteStepTitle,
+      uiTexts.popup.deleteStepText,
       {
         accept: () => {
           this.store.deleteStep(this.userStep());
+          this.store.removeContainerMapReferencesByStep(this.userStep(), this.userJourney().id)
           this.dragDropService.clearHistory();
           this.dragDropService.removeAllDropZonesFromStep(this.userStep())
         }

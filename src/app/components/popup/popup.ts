@@ -7,6 +7,7 @@ import {NgComponentOutlet} from '@angular/common';
   imports: [
     NgComponentOutlet
   ],
+  standalone: true,
   templateUrl: './popup.html',
   styleUrl: './popup.scss'
 })

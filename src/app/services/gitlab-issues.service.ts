@@ -5,6 +5,7 @@ import {StepIssue} from '../interfaces/step-issue';
   providedIn: 'root',
 })
 export class GitlabIssuesService {
+  public container = 'issue-list';
   private issues: StepIssue[] = [];
   private ids: string[] = [
     '44fcab50-33f4-4584-9a9f-c0ce8cbbeaba',
@@ -29,6 +30,7 @@ export class GitlabIssuesService {
         id: this.ids[i],
         title: `Fake Issue #${i + 1}`,
         description: `Description for fake issue #${i + 1}`,
+        stepId: this.container,
       });
     }
   }
