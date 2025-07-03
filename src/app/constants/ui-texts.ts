@@ -10,7 +10,7 @@ export const UI_TEXTS = {
     deleteStepTitle: 'Delete this step?',
     deleteStepText: 'By deleting this step, corresponding tickets will be put back into the selection area.',
     purgeDBTitle: 'Purge Database? 💥',
-    purgeDBText: 'By accepting, all data in indexedDB will be deleted. Proceed?',
+    purgeDBText: 'By accepting, all data in the indexedDB will be deleted. This is meant as a fall back for prevent zombie data. Proceed?',
   },
   releases: {
     addStepHint: 'Add a step to the journey to receive a slot.'
