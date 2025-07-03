@@ -1,3 +1,4 @@
+{{ form().valid }}
 <input
   #inputField
   id="input-field"
@@ -7,7 +8,7 @@
   [ngClass]="{
     'border-b-gray-400 dark:border-b-gray-600':
       !control.invalid || !control.touched,
-    'border-b-red-500 dark:border-b-red-500':
+    'border-b-red-500! dark:border-b-red-500!':
       control.invalid && control.touched,
   }"
   [formControl]="control"

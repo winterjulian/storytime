@@ -20,14 +20,15 @@ import {CreationService} from '../../services/creation.service';
 export class InputField implements OnInit, AfterViewInit {
   @ViewChild('inputField', {static: false}) inputRef!: ElementRef;
 
-  public creationService = inject(CreationService);
-
   public form = input.required<FormGroup>();
   public placeholder = input<string>('New...');
   public accept = output<void>();
   public cancel = output<void>();
 
-  constructor(private elRef: ElementRef) {
+  constructor(
+    public creationService: CreationService,
+    private elRef: ElementRef
+  ) {
   }
 
   @HostListener('document:mousedown', ['$event'])
@@ -40,7 +41,9 @@ export class InputField implements OnInit, AfterViewInit {
 
   @HostListener('keydown', ['$event'])
   handleKeyDown(event: KeyboardEvent) {
-    if (event.key === 'Enter') {
+    if (event.key === 'Enter' && event.ctrlKey) {
+      this.applyEdit();
+    } else if (event.key === 'Enter') {
       this.applyEdit();
     } else if (event.key === 'Escape') {
       this.cancelEdit();
@@ -53,26 +56,29 @@ export class InputField implements OnInit, AfterViewInit {
 
   ngAfterViewInit() {
     this.inputRef.nativeElement.focus();
-    // makes scroll functionality unnecessary ... yay.
   }
 
   get control(): FormControl {
     return this.form().controls['input'] as FormControl;
   }
 
-  resetComponent() {
-    this.form().controls['input'].reset();
-    this.creationService.setIsCreatingNewElement(false);
-  }
-
   applyEdit() {
-    this.accept.emit();
-    this.resetComponent();
-    this.creationService.setIsCreatingNewElement(true);
+    if (this.form().valid) {
+      this.accept.emit();
+      this.resetComponent();
+      this.creationService.setIsCreatingNewElement(true);
+    } else {
+      this.control.markAsTouched();
+    }
   }
 
   cancelEdit() {
     this.cancel.emit();
     this.resetComponent();
+  }
+
+  resetComponent() {
+    this.form().controls['input'].reset();
+    this.creationService.setIsCreatingNewElement(false);
   }
 }
