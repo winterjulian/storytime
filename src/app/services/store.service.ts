@@ -74,6 +74,10 @@ export class StoreService {
     this._userJourneys.set(result);
   }
 
+  public setUserJourneys(journeys: UserJourney[]) {
+    this._userJourneys.set(journeys);
+  }
+
   private filterGitlabIssues(dbIssues: DbStepIssue[], gitlabAll: StepIssue[]): StepIssue[] {
     const dbIssueIds = new Set(dbIssues.map(i => i.id));
     return gitlabAll.filter(issue => !dbIssueIds.has(issue.id));

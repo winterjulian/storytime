@@ -11,6 +11,8 @@ export const UI_TEXTS = {
     deleteStepText: 'By deleting this step, corresponding tickets will be put back into the selection area.',
     purgeDBTitle: 'Purge Database? 💥',
     purgeDBText: 'By accepting, all data in the indexedDB will be deleted. This is meant as a fall back for prevent zombie data. Proceed?',
+    fileUploadErrorTitle: 'JSON upload failed',
+    fileUploadErrorText: 'The upload of the given JSON file has failed. Please try a valid JSON file.',
   },
   releases: {
     addStepHint: 'Add a step to the journey to receive a slot.'

@@ -1,7 +1,5 @@
 # Storytime
 
-![Screenshot 2025-07-04 005140.png](../../Pictures/Screenshots/Screenshot%202025-07-04%20005140.png)
-
 ### Development Setup
 
 1. Make sure to have npm installed and updated.

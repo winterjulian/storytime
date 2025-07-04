@@ -21,8 +21,10 @@
         }
       </div>
       <div class="flex gap-2 justify-end mt-4">
-        <button class="standard-button cancel-button" (click)="popupService.cancel()">Cancel</button>
-        <button class="standard-button" (click)="popupService.accept()">Accept</button>
+        @if (!popupService.isHint()) {
+          <button class="standard-button cancel-button" (click)="popupService.cancel()">Cancel</button>
+        }
+        <button class="standard-button" (click)="popupService.confirm()">Confirm</button>
       </div>
     </div>
   </div>

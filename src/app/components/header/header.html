@@ -4,6 +4,21 @@
   </div>
   <div class="flex flex-row p-3 pr-8">
     <div class="mr-6">
+      <button (click)="triggerFileInput()" class="standard-button">
+        <div class="flex">
+          <i class="material-icons">publish</i> JSON
+        </div>
+      </button>
+      <input #fileInput type="file" accept=".json" style="display: none" (change)="handleFileUpload($event)">
+    </div>
+    <div class="mr-6">
+      <button (click)="downloadJSON()" class="standard-button">
+        <div class="flex">
+          <i class="material-icons">download</i> JSON
+        </div>
+      </button>
+    </div>
+    <div class="mr-6">
       <button (click)="purgeDb()" class="standard-button">
         <div class="flex">
           <i class="material-icons">settings</i>

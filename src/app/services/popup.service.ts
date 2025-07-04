@@ -4,9 +4,10 @@ import {Injectable, signal, Type} from '@angular/core';
   providedIn: 'root'
 })
 export class PopupService {
-  private open = signal(false);
+  private open = signal<boolean>(false);
   private title = signal<string | undefined>(undefined);
   private message = signal<string | undefined>(undefined);
+  private hint = signal<boolean>(false);
   private component = signal<Type<any> | null>(null); // *ngComponentOutlet accepts only null <.<
 
   private onAcceptCallback: (() => void) | undefined = undefined;
@@ -34,12 +35,14 @@ export class PopupService {
   openWithMessage(
     title: string | undefined,
     message: string,
-    callbacks?: { accept?: () => void; cancel?: () => void }
+    callbacks?: { accept?: () => void; cancel?: () => void },
+    isHint: boolean = false
   ) {
     // message enuff for now :]
     this.title.set(title);
     this.message.set(message);
     this.component.set(null); // *ngComponentOutlet accepts only null <.<
+    this.hint.set(isHint);
     this.onAcceptCallback = callbacks?.accept ?? undefined;
     this.onCancelCallback = callbacks?.cancel ?? undefined;
     this.open.set(true);
@@ -54,7 +57,7 @@ export class PopupService {
     this.onCancelCallback = undefined;
   }
 
-  accept() {
+  confirm() {
     this.onAcceptCallback?.();
     this.close();
   }
@@ -74,6 +77,10 @@ export class PopupService {
 
   getMessage() {
     return this.message();
+  }
+
+  isHint(): boolean {
+    return this.hint();
   }
 
   getComponent() {
