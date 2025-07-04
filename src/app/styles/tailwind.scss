@@ -86,6 +86,10 @@
   @apply flex items-center;
 }
 
+.release-spacer-enlargement {
+  @apply min-h-82
+}
+
 .toned-down-text {
   @apply text-gray-400;
   @apply dark:text-gray-500;

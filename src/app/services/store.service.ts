@@ -74,8 +74,23 @@ export class StoreService {
     this._userJourneys.set(result);
   }
 
-  public setUserJourneys(journeys: UserJourney[]) {
+  async setUserJourneysFromJSON(journeys: UserJourney[]) {
+    this.db.invalidateAll();
+
+    for (const journey of journeys) {
+      await this.db.addJourney(journey);
+
+      for (const step of journey.userSteps) {
+        await this.db.addStep(step);
+
+        for (const issue of step.issues) {
+          await this.db.addIssue(issue);
+        }
+      }
+    }
+
     this._userJourneys.set(journeys);
+    this.db.loadIssues();
   }
 
   private filterGitlabIssues(dbIssues: DbStepIssue[], gitlabAll: StepIssue[]): StepIssue[] {
@@ -164,7 +179,7 @@ export class StoreService {
   }
 
   public purgeDb() {
-    this.db.clearDatabaseCompletely();
+    this.db.clearDatabase();
     this._userJourneys.set([]);
   }
 

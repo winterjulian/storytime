@@ -54,6 +54,13 @@ export class IndexedDbService {
     this.releases.set(await db.getAll('releases'));
   }
 
+  async invalidateAll() {
+    this.journeys.set(undefined);
+    this.steps.set(undefined);
+    this.issues.set(undefined);
+    this.releases.set(undefined);
+  }
+
   async loadIssues() {
     // maybe needed later
     this.issues.set(undefined);
@@ -137,12 +144,13 @@ export class IndexedDbService {
   // CLEAR DB
   // ========
 
-  async clearDatabaseCompletely() {
+  async clearDatabase() {
     const dbName = 'UserStoryMapDB';
 
     return new Promise<void>(() => {
       const deleteRequest = indexedDB.deleteDatabase(dbName);
       // unsure if .onFunctions() mandatory
+      // always running into blocked, unsure why
       deleteRequest.onsuccess = () => {
         console.log('Deletion complete <3');
       };

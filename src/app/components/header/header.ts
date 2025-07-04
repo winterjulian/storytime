@@ -2,6 +2,7 @@ import {Component, ElementRef, inject, OnInit, signal, ViewChild} from '@angular
 import {ThemeService} from '../../services/theme.service';
 import {StoreService} from '../../services/store.service';
 import {PopupService} from '../../services/popup.service';
+import {JsonService} from '../../services/json-service';
 import {UI_TEXTS as uiTexts} from '../../constants/ui-texts';
 
 @Component({
@@ -15,6 +16,7 @@ export class Header implements OnInit {
   @ViewChild('fileInput') fileInput!: ElementRef<HTMLInputElement>;
 
   public store = inject(StoreService);
+  public jsonService = inject(JsonService);
   public popupService = inject(PopupService);
   public themeService = inject(ThemeService);
 
@@ -51,50 +53,16 @@ export class Header implements OnInit {
     )
   }
 
-  downloadJSON() {
-    const jsonString = JSON.stringify(this.store.userJourneys(), null, 2);
-
-    const blob = new Blob([jsonString], {type: 'application/json'});
-    const url = URL.createObjectURL(blob);
-
-    const anchorElement = document.createElement('a');
-    anchorElement.href = url;
-    anchorElement.download = 'user-journey.json';
-    anchorElement.click();
-
-    URL.revokeObjectURL(url);
-  }
-
   triggerFileInput() {
+    // programmatical click on invisible input:
     this.fileInput.nativeElement.click();
   }
 
+  downloadJSON() {
+    this.jsonService.downloadJSON();
+  }
+
   handleFileUpload(event: Event) {
-    const input = event.target as HTMLInputElement;
-    if (!input.files?.length) return;
-
-    const file = input.files[0];
-    const reader = new FileReader();
-
-    reader.onload = () => {
-      try {
-        const content = reader.result as string;
-        const parsed = JSON.parse(content);
-        this.store.setUserJourneys(parsed);
-      } catch (err) {
-        this.popupService.openWithMessage(
-          uiTexts.popup.fileUploadErrorTitle,
-          uiTexts.popup.fileUploadErrorText,
-          {
-            accept: () => {
-              this.store.purgeDb();
-            }
-          },
-          true,
-        )
-      }
-    };
-
-    reader.readAsText(file);
+    this.jsonService.handleFileUpload(event);
   }
 }
