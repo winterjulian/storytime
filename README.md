@@ -1,5 +1,7 @@
 # Storytime
 
+![Screenshot 2025-07-04 005140](https://github.com/user-attachments/assets/13459991-341f-48d6-8b5a-cbbd852e9a10)
+
 ### Development Setup
 
 1. Make sure to have npm installed and updated.
